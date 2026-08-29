@@ -1,26 +1,56 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --brand-red: #E1193E;
+    --brand-red-dark: #C20E30;
+    --brand-red-light: #FFF0F3;
+    --brand-red-subtle: #FDF2F4;
+    --brand-pink-border: #FCE7EC;
+    --text-primary: #1E293B;
+    --text-secondary: #64748B;
+    --card-bg: #FFFFFF;
+    --card-border: #F1F5F9;
   }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  color: #1E293B;
+  background-color: #FFFFFF;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #F8FAFC;
+}
+::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94A3B8;
+}
+
+/* Crimson gradient & shadows */
+.brand-gradient {
+  background: linear-gradient(135deg, #E1193E 0%, #D00D2D 100%);
+}
+
+.brand-shadow {
+  box-shadow: 0 10px 25px -5px rgba(225, 25, 62, 0.2), 0 8px 10px -6px rgba(225, 25, 62, 0.1);
+}
+
+.card-hover {
+  transition: all 0.25s ease-in-out;
+}
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.06), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
 }
