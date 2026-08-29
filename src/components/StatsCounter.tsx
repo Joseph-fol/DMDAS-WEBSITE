@@ -9,17 +9,17 @@ interface StatsCounterProps {
 export default function StatsCounter({ variant = "full" }: StatsCounterProps) {
   const stats = [
     {
-      value: "15+",
+      value: "1",
       label: variant === "full" ? "Institutions Using DMDAS" : "Institutions",
       icon: GraduationCap,
     },
     {
-      value: "8,000+",
+      value: "50+",
       label: variant === "full" ? "Students Served" : "Students",
       icon: Users,
     },
     {
-      value: "25,000+",
+      value: "0+",
       label: "Manuals Distributed",
       icon: BookOpen,
     },

@@ -17,13 +17,13 @@ const extraFaqs: FaqItem[] = [
   {
     question: "What happens if a student loses their keycode token?",
     answer:
-      "Students can look up previously allocated tokens using their verified matriculation number and student email address, or request instant re-verification from their course coordinator.",
+      "Students can look up previously allocated tokens using their verified matriculation number and student email address, or request instant re-verification from their course representative.",
     category: "Students",
   },
   {
-    question: "How are royalties and sales revenues disbursed to departments?",
+    question: "How are royalties and sales revenues disbursed to course representatives?",
     answer:
-      "Revenues collected from manual distributions are automatically credited into the department's authorized institutional bank account with detailed automated financial audit statements.",
+      "Revenues collected from manual distributions are automatically credited into the course representative's authorized bank account with detailed automated financial audit statements.",
     category: "Security & Payments",
   },
 ];
@@ -67,7 +67,7 @@ export default function FaqPage() {
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search answers (e.g. keycode, payment, offline access)..."
+              placeholder="Search answers (e.g. keycode, payment)..."
               className="w-full pl-12 pr-4 py-4 rounded-2xl bg-white border border-gray-200 shadow-sm text-sm focus:outline-none focus:ring-2 focus:ring-[#E1193E]/20 focus:border-[#E1193E] text-gray-900"
             />
             <Search className="w-5 h-5 text-gray-400 absolute left-4 top-4" />
@@ -102,7 +102,7 @@ export default function FaqPage() {
               <HelpCircle className="w-12 h-12 mx-auto text-gray-300 mb-3" />
               <p className="font-semibold text-gray-700">No matching questions found</p>
               <p className="text-xs text-gray-400 mt-1">
-                Try searching with different terms or select "All" categories.
+                Try searching with different terms or select All categories.
               </p>
             </div>
           )}

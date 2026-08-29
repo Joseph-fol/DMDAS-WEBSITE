@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
+import { satoshi } from "./fonts";
 import Footer from "@/components/Footer";
 import KeycodeModal from "@/components/KeycodeModal";
 import AuthModal from "@/components/AuthModal";
@@ -27,11 +28,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={satoshi.className}>
       <body className="font-sans antialiased min-h-screen flex flex-col bg-white text-[#1E293B] selection:bg-red-100 selection:text-[#E1193E]">
         <ModalProvider>
           <Navbar />
-          <main className="flex-grow">{children}</main>
+          <main className="grow">{children}</main>
           <Footer />
           <KeycodeModal />
           <AuthModal />

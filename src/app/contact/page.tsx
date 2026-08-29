@@ -66,7 +66,7 @@ export default function ContactPage() {
                     <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider">
                       Call Us Directly
                     </h4>
-                    <p className="text-base font-bold text-gray-900 mt-0.5">+234 800 123 4567</p>
+                    <p className="text-base font-bold text-gray-900 mt-0.5">+234 812 583 1469</p>
                     <p className="text-xs text-gray-500 mt-0.5">Mon - Fri, 8:00 AM - 6:00 PM WAT</p>
                   </div>
                 </div>
@@ -79,7 +79,7 @@ export default function ContactPage() {
                     <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider">
                       Email Inquiries
                     </h4>
-                    <p className="text-base font-bold text-gray-900 mt-0.5">hello@dmdas.com.ng</p>
+                    <p className="text-base font-bold text-gray-900 mt-0.5">support@dmdas.com.ng</p>
                     <p className="text-xs text-gray-500 mt-0.5">Responses within 2 business hours</p>
                   </div>
                 </div>

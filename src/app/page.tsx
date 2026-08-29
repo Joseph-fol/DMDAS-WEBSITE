@@ -5,7 +5,7 @@ import { ArrowRight, BookOpen, KeyRound, ShieldCheck, BarChart3, Users, CheckCir
 import StatsCounter from "@/components/StatsCounter";
 import CtaBanner from "@/components/CtaBanner";
 import FaqAccordion from "@/components/FaqAccordion";
-import { HeroCampusVisual, StudentWorkflowVisual } from "@/components/CampusVisuals";
+import { HeroCampusVisual, HowItWorkImage, StudentWorkflowVisual } from "@/components/CampusVisuals";
 import { useModal } from "@/context/ModalContext";
 import Image from "next/image";
 
@@ -80,22 +80,22 @@ export default function HomePage() {
                 <div className="flex -space-x-2 overflow-hidden">
                   <Image width={20} height={30}
                     className="inline-block h-8 w-8 rounded-full ring-2 ring-white object-cover"
-                    src="/student-avatar1"
+                    src="/student-avatar1.jpg"
                     alt="Student avatar 1"
                   />
                   <Image width={20} height={30}
                     className="inline-block h-8 w-8 rounded-full ring-2 ring-white object-cover"
-                    src="/student-avatar2"
+                    src="/student-avatar2.jpg"
                     alt="Student avatar 2"
                   />
                   <Image width={20} height={30}
                     className="inline-block h-8 w-8 rounded-full ring-2 ring-white object-cover"
-                    src="/student-avatar3"
+                    src="/student-avatar3.jpg"
                     alt="Student avatar 3"
                   />
                 </div>
                 <p className="text-xs text-gray-500 font-medium leading-snug">
-                  Trusted by students and institutions <br className="hidden sm:block" />
+                  Trusted by students, departments and institutions <br className="hidden sm:block" />
                   across campuses.
                 </p>
               </div>
@@ -147,7 +147,7 @@ export default function HomePage() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             {/* Left Image with numbered overlay */}
             <div className="lg:col-span-6 order-2 lg:order-1">
-              <StudentWorkflowVisual />
+              <HowItWorkImage />
             </div>
 
             {/* Right Text Content */}

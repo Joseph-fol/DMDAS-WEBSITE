@@ -13,7 +13,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import CtaBanner from "@/components/CtaBanner";
-import { HeroCampusVisual } from "@/components/CampusVisuals";
+import { HeroCampusVisual, HowItWorkImage } from "@/components/CampusVisuals";
 import { useModal } from "@/context/ModalContext";
 
 export default function HowItWorksPage() {
@@ -24,7 +24,7 @@ export default function HowItWorksPage() {
       number: 1,
       title: "Distribute",
       description:
-        "Institutions upload course manuals to the system. Manuals are organized and made available to the right students.",
+        "Course Representative upload course manuals to the system. Manuals are organized and made available to the right students.",
       icon: UploadCloud,
       image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=800&auto=format&fit=crop",
       imageAlt: "Institution uploading course manuals to DMDAS",
@@ -114,7 +114,7 @@ export default function HowItWorksPage() {
 
             {/* Right Hero Visual */}
             <div className="lg:col-span-6">
-              <HeroCampusVisual />
+              <HowItWorkImage />
             </div>
           </div>
         </div>

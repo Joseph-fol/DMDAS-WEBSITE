@@ -3,8 +3,9 @@
 import { Target, Eye, Heart, CheckCircle2, ArrowRight } from "lucide-react";
 import StatsCounter from "@/components/StatsCounter";
 import CtaBanner from "@/components/CtaBanner";
-import { HeroCampusVisual, StudyGroupVisual } from "@/components/CampusVisuals";
+import { AboutImage, HeroCampusVisual, HowItWorkImage, StudyGroupVisual } from "@/components/CampusVisuals";
 import { useModal } from "@/context/ModalContext";
+import Link from "next/link";
 
 export default function AboutPage() {
   const { openAuthModal } = useModal();
@@ -55,7 +56,7 @@ export default function AboutPage() {
 
             {/* Right Hero Visual */}
             <div className="lg:col-span-6">
-              <HeroCampusVisual />
+              <AboutImage />
             </div>
           </div>
         </div>
@@ -108,7 +109,7 @@ export default function AboutPage() {
               <ul className="space-y-2.5">
                 {values.map((val, idx) => (
                   <li key={idx} className="flex items-center gap-2.5 text-sm font-medium text-gray-700">
-                    <CheckCircle2 className="w-4 h-4 text-[#E1193E] flex-shrink-0" />
+                    <CheckCircle2 className="w-4 h-4 text-[#E1193E] shrink-0" />
                     <span>{val}</span>
                   </li>
                 ))}
@@ -124,7 +125,7 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             {/* Left Image */}
             <div className="lg:col-span-6">
-              <StudyGroupVisual />
+              <HowItWorkImage />
             </div>
 
             {/* Right Story Content */}
@@ -140,7 +141,7 @@ export default function AboutPage() {
 
               <div className="space-y-4 text-sm sm:text-base text-gray-600 leading-relaxed max-w-xl mx-auto lg:mx-0">
                 <p>
-                  DMDAS was born from the need to solve the challenges of manual distribution in schools—delays, mismanagement, lack of tracking, and accountability gaps.
+                  DMDAS was born from the need to solve the challenges of manual distribution in schools delays, mismanagement, lack of tracking, long queing and accountability gaps.
                 </p>
                 <p>
                   We combine technology and education to create a platform that empowers institutions and students with a seamless, secure, and transparent experience.
@@ -148,13 +149,13 @@ export default function AboutPage() {
               </div>
 
               <div className="pt-3">
-                <button
-                  onClick={() => openAuthModal("register")}
+                <Link href="https://app.dmdas.com.ng/signup" target="_blank"
+                  // onClick={() => openAuthModal("register")}
                   className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full bg-[#E1193E] hover:bg-[#C20E30] text-white font-semibold text-sm sm:text-base shadow-lg shadow-red-500/20 transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
                 >
                   <span>Get Started Today</span>
                   <ArrowRight className="w-4 h-4" />
-                </button>
+                </Link>
               </div>
             </div>
           </div>

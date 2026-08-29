@@ -19,7 +19,7 @@ export const defaultFaqs: FaqItem[] = [
   {
     question: "How do I get a keycode?",
     answer:
-      "Keycodes are unique alphanumeric tokens issued directly by course coordinators, department administrators, or automatically generated after making a secure digital payment. Students simply enter their keycode on the portal to instantly unlock and access their course manuals.",
+      "Keycodes are unique alphanumeric tokens issued directly by course coordinators, department administrators, or automatically generated after making a secure digital payment. Students simply enter their keycode on the portal to instantly unlock and collect their course manuals from the course representative",
     category: "Students",
   },
   {
@@ -35,10 +35,10 @@ export const defaultFaqs: FaqItem[] = [
     category: "Security & Payments",
   },
   {
-    question: "Can students read manuals offline?",
+    question: "Who developed DMDAS",
     answer:
-      "Yes! Once a manual is unlocked using an authorized keycode, students can access it in the browser reader or download an encrypted offline copy onto their mobile device or laptop.",
-    category: "Students",
+      "DMDAS was developed and maintained by FolaTech (a Software Company), which is owned by Olawoyin Joseph Folasakin, a FullStack Software Engineer.",
+    category: "General",
   },
   {
     question: "How does DMDAS prevent manual piracy and unauthorized sharing?",
