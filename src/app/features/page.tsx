@@ -27,6 +27,7 @@ import {
   PaymentsMockup,
 } from "@/components/MockupScreens";
 import { useModal } from "@/context/ModalContext";
+import Link from "next/link";
 
 export default function FeaturesPage() {
   const { openAuthModal } = useModal();
@@ -140,13 +141,12 @@ export default function FeaturesPage() {
               </p>
 
               <div className="pt-2">
-                <button
-                  onClick={() => openAuthModal("register")}
+                <Link href="https://app.dmdas.com.ng/signup"
                   className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full bg-[#E1193E] hover:bg-[#C20E30] text-white font-semibold text-sm sm:text-base shadow-lg shadow-red-500/20 transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
                 >
                   <span>Get Started Today</span>
                   <ArrowRight className="w-4 h-4" />
-                </button>
+                </Link>
               </div>
             </div>
 

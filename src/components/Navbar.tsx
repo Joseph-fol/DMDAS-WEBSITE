@@ -84,13 +84,13 @@ export default function Navbar() {
             </button>
 
             <Link
-              href="/https://app.dmdas.com.ng/signin/" target="_blank"
+              href="https://app.dmdas.com.ng/signin/" target="_blank"
               className="px-5 py-2 text-sm font-medium text-gray-700 hover:text-[#E1193E] border border-gray-300 hover:border-red-300 rounded-lg transition-all duration-200 hover:bg-red-50/50"
             >
               Log In
             </Link>
 
-            <Link href="/https://app.dmdas.com.ng/signup/" target="_blank"
+            <Link href="https://app.dmdas.com.ng/signup/" target="_blank"
               // onClick={() => openAuthModal("register")}
               className="px-5 py-2 text-sm font-medium text-white bg-[#E1193E] hover:bg-[#C20E30] rounded-lg shadow-sm hover:shadow transition-all duration-200 active:scale-[0.98]"
             >
