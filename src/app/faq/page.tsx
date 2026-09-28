@@ -47,7 +47,7 @@ export default function FaqPage() {
   return (
     <div className="flex flex-col min-h-screen">
       {/* 1. HERO & SEARCH */}
-      <section className="relative overflow-hidden pt-12 pb-16 bg-gradient-to-b from-[#FFF5F7] to-white border-b border-pink-100/60">
+      <section className="page-gradient-header relative overflow-hidden pt-12 pb-16 bg-gradient-to-b from-[#FFF5F7] to-white border-b border-pink-100/60">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
           <div data-aos="fade-down" data-aos-delay="100" className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-red-50 border border-pink-100 text-[#E1193E] text-xs font-bold tracking-wider uppercase">
             <span>HELP & KNOWLEDGE BASE</span>

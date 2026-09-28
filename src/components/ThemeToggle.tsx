@@ -48,7 +48,7 @@ export default function ThemeToggle() {
       onClick={toggleTheme}
       className="inline-flex items-center justify-center w-9 h-9 rounded-full text-gray-700 dark:text-gray-200 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:text-[#E1193E] dark:hover:text-red-300 transition-colors"
       aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
-      title={isDark ? "Switch to light mode" : "Switch to dark mode"}
+      title={isDark ? "Light mode" : "Dark mode"}
     >
       {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
     </button>

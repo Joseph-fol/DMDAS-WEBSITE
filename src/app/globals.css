@@ -25,6 +25,7 @@
 body {
   color: #1E293B;
   background-color: #FFFFFF;
+  overflow-x: hidden;
   font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -34,6 +35,16 @@ body {
 .dark body {
   color: #E2E8F0;
   background-color: #0F172A;
+}
+
+.page-gradient-header {
+  overflow-x: clip;
+}
+
+.dark .page-gradient-header {
+  background-color: #172033;
+  background-image: none;
+  border-color: #334155;
 }
 
 .dark .bg-white,
@@ -49,6 +60,11 @@ body {
 .dark [class~="bg-[#FFF5F7]"],
 .dark [class~="bg-red-50"] {
   background-color: #321923;
+}
+
+.dark section[class~="from-[#FFF5F7]"] {
+  background-color: #172033;
+  background-image: none;
 }
 
 .dark [class~="bg-[#FFE4E9]"],
