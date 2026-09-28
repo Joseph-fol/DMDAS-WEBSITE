@@ -47,7 +47,7 @@ export default function ContactPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
             {/* Left: Contact Info */}
-            <div className="lg:col-span-5 space-y-8">
+            <div data-aos="fade-right" data-aos-delay="100" className="lg:col-span-5 space-y-8">
               <div>
                 <h3 className="text-2xl font-bold text-gray-900 tracking-tight">
                   Reach Our Support & Institutional Team
@@ -102,12 +102,12 @@ export default function ContactPage() {
             </div>
 
             {/* Right: Contact Form */}
-            <div className="lg:col-span-7 bg-white p-8 sm:p-10 rounded-3xl border border-gray-100/90 shadow-xl shadow-gray-100/50">
+            <div data-aos="fade-left" data-aos-delay="200" className="lg:col-span-7 bg-white p-8 sm:p-10 rounded-3xl border border-gray-100/90 shadow-xl shadow-gray-100/50">
               {!isSubmitted ? (
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <h3 className="text-xl font-bold text-gray-900 mb-2">Send us a Message</h3>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div data-aos="fade-down" data-aos-delay="100" className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-xs font-semibold text-gray-700 mb-1.5">
                         Your Full Name *
@@ -137,7 +137,7 @@ export default function ContactPage() {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div data-aos="fade-down" data-aos-delay="200" className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-xs font-semibold text-gray-700 mb-1.5">
                         Official Email Address *
@@ -147,7 +147,7 @@ export default function ContactPage() {
                         required
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        placeholder="you@institution.edu.ng"
+                        placeholder="Your email"
                         className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:border-[#E1193E] text-gray-900"
                       />
                     </div>
@@ -166,7 +166,7 @@ export default function ContactPage() {
                     </div>
                   </div>
 
-                  <div>
+                  <div data-aos="fade-down" data-aos-delay="300">
                     <label className="block text-xs font-semibold text-gray-700 mb-1.5">
                       Subject / Inquiry Type
                     </label>
@@ -183,7 +183,7 @@ export default function ContactPage() {
                     </select>
                   </div>
 
-                  <div>
+                  <div data-aos="fade-down" data-aos-delay="400">
                     <label className="block text-xs font-semibold text-gray-700 mb-1.5">
                       Your Message *
                     </label>
@@ -222,7 +222,7 @@ export default function ContactPage() {
                   </div>
                   <h3 className="text-2xl font-bold text-gray-900">Message Received!</h3>
                   <p className="text-sm text-gray-600 max-w-md mx-auto">
-                    Thank you for reaching out, <strong>{formData.name}</strong>. Our institutional team will get back to you via <strong>{formData.email}</strong> shortly.
+                    Thank you for reaching out, <strong>{formData.name}</strong>. Our support team will get back to you via <strong>{formData.email}</strong> shortly.
                   </p>
                   <button
                     onClick={() => {
