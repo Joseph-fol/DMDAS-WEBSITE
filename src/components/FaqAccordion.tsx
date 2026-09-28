@@ -76,35 +76,38 @@ export default function FaqAccordion({
             data-aos-delay={Math.min(idx * 120, 600)}
             data-aos-duration="700"
             data-aos-once="true"
-            className={`border rounded-2xl p-5 sm:p-6 transition-all duration-200 bg-white ${
-              isOpen
-                ? "border-[#E1193E]/30 shadow-md shadow-red-500/5 ring-1 ring-[#E1193E]/20"
-                : "border-gray-200/90 hover:border-red-200 hover:bg-gray-50/50"
-            }`}
           >
-            <button
-              onClick={() => toggle(idx)}
-              className="w-full flex items-center justify-between text-left gap-4 group focus:outline-none"
+            <div
+              className={`border rounded-2xl p-5 sm:p-6 transition-all duration-200 bg-white ${
+                isOpen
+                  ? "border-[#E1193E]/30 shadow-md shadow-red-500/5 ring-1 ring-[#E1193E]/20"
+                  : "border-gray-200/90 hover:border-red-200 hover:bg-gray-50/50"
+              }`}
             >
-              <span className="font-bold text-gray-900 text-sm sm:text-base group-hover:text-[#E1193E] transition-colors">
-                {faq.question}
-              </span>
-              <div
-                className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 transition-colors ${
-                  isOpen
-                    ? "bg-[#E1193E] text-white"
-                    : "bg-red-50 text-[#E1193E] group-hover:bg-[#E1193E] group-hover:text-white"
-                }`}
+              <button
+                onClick={() => toggle(idx)}
+                className="w-full flex items-center justify-between text-left gap-4 group focus:outline-none"
               >
-                {isOpen ? <Minus className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
-              </div>
-            </button>
+                <span className="font-bold text-gray-900 text-sm sm:text-base group-hover:text-[#E1193E] transition-colors">
+                  {faq.question}
+                </span>
+                <div
+                  className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 transition-colors ${
+                    isOpen
+                      ? "bg-[#E1193E] text-white"
+                      : "bg-red-50 text-[#E1193E] group-hover:bg-[#E1193E] group-hover:text-white"
+                  }`}
+                >
+                  {isOpen ? <Minus className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
+                </div>
+              </button>
 
-            {isOpen && (
-              <div className="mt-3.5 pt-3 border-t border-gray-100 text-xs sm:text-sm text-gray-600 leading-relaxed animate-in fade-in duration-200">
-                {faq.answer}
-              </div>
-            )}
+              {isOpen && (
+                <div className="mt-3.5 pt-3 border-t border-gray-100 text-xs sm:text-sm text-gray-600 leading-relaxed">
+                  {faq.answer}
+                </div>
+              )}
+            </div>
           </div>
         );
       })}
