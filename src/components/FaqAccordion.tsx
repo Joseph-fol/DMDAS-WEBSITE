@@ -75,6 +75,7 @@ export default function FaqAccordion({
             data-aos={idx % 2 === 0 ? "fade-right" : "fade-left"}
             data-aos-delay={Math.min(idx * 120, 600)}
             data-aos-duration="700"
+            data-aos-once="true"
             className={`border rounded-2xl p-5 sm:p-6 transition-all duration-200 bg-white ${
               isOpen
                 ? "border-[#E1193E]/30 shadow-md shadow-red-500/5 ring-1 ring-[#E1193E]/20"
