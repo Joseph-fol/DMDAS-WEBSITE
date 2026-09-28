@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import Logo from "./Logo";
 import { Menu, X, KeyRound } from "lucide-react";
 import { useModal } from "@/context/ModalContext";
+import ThemeToggle from "./ThemeToggle";
 
 const navLinks = [
   { name: "Home", href: "/" },
@@ -74,6 +75,7 @@ export default function Navbar() {
 
           {/* Action Buttons */}
           <div className="hidden lg:flex items-center space-x-3">
+            <ThemeToggle />
             <button
               onClick={openKeycodeModal}
               className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-medium text-gray-700 hover:text-[#E1193E] bg-gray-50 hover:bg-red-50 border border-gray-200 hover:border-red-200 rounded-full transition-all duration-200"
@@ -100,6 +102,7 @@ export default function Navbar() {
 
           {/* Mobile menu button */}
           <div className="flex items-center gap-2 lg:hidden">
+            <ThemeToggle />
             <button
               onClick={openKeycodeModal}
               className="p-2 text-gray-700 hover:text-[#E1193E] bg-gray-50 border border-gray-200 rounded-lg"

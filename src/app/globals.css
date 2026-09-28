@@ -30,6 +30,77 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Dark theme overrides for the existing utility-based surface palette. */
+.dark body {
+  color: #E2E8F0;
+  background-color: #0F172A;
+}
+
+.dark .bg-white,
+.dark .bg-white\/95 {
+  background-color: #111827;
+}
+
+.dark [class~="bg-[#FAFBFD]"],
+.dark [class~="bg-gray-50"] {
+  background-color: #172033;
+}
+
+.dark [class~="bg-[#FFF5F7]"],
+.dark [class~="bg-red-50"] {
+  background-color: #321923;
+}
+
+.dark [class~="bg-[#FFE4E9]"],
+.dark [class~="bg-red-100"] {
+  background-color: #4A202C;
+}
+
+.dark [class~="text-gray-900"] {
+  color: #F8FAFC;
+}
+
+.dark [class~="text-gray-700"] {
+  color: #CBD5E1;
+}
+
+.dark [class~="text-gray-600"],
+.dark [class~="text-gray-500"] {
+  color: #94A3B8;
+}
+
+.dark [class~="text-gray-400"] {
+  color: #64748B;
+}
+
+.dark [class~="border-gray-100"],
+.dark [class~="border-gray-200"],
+.dark [class~="border-gray-300"],
+.dark [class~="border-pink-100"] {
+  border-color: #334155;
+}
+
+.dark input,
+.dark textarea,
+.dark select {
+  color: #F8FAFC;
+  background-color: #1E293B;
+  border-color: #475569;
+}
+
+.dark input::placeholder,
+.dark textarea::placeholder {
+  color: #94A3B8;
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: #111827;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #475569;
+}
+
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;

@@ -79,7 +79,7 @@ export default function ContactPage() {
                     <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider">
                       Email Inquiries
                     </h4>
-                    <p className="text-base font-bold text-gray-900 mt-0.5">support@dmdas.com.ng</p>
+                    <a href="mailto:support@dmdas.com.ng" className="text-base font-bold text-gray-900 mt-0.5" >support@dmdas.com.ng</a>
                     <p className="text-xs text-gray-500 mt-0.5">Responses within 2 business hours</p>
                   </div>
                 </div>
