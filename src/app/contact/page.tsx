@@ -30,13 +30,13 @@ export default function ContactPage() {
       {/* 1. HEADER */}
       <section className="pt-12 pb-14 bg-gradient-to-b from-[#FFF5F7] to-white border-b border-pink-100/60">
         <div className="max-w-4xl mx-auto px-4 text-center space-y-4">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-red-50 border border-pink-100 text-[#E1193E] text-xs font-bold tracking-wider uppercase">
+          <div data-aos="fade-down" data-aos-delay="100" className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-red-50 border border-pink-100 text-[#E1193E] text-xs font-bold tracking-wider uppercase">
             <span>GET IN TOUCH</span>
           </div>
-          <h1 className="text-4xl sm:text-5xl font-black text-gray-900 tracking-tight">
+          <h1 data-aos="fade-up" data-aos-delay="200" className="text-4xl sm:text-5xl font-black text-gray-900 tracking-tight">
             Contact <span className="text-[#E1193E]">DMDAS</span>
           </h1>
-          <p className="text-gray-600 text-sm sm:text-base max-w-xl mx-auto">
+          <p data-aos="fade-up" data-aos-delay="300" className="text-gray-600 text-sm sm:text-base max-w-xl mx-auto">
             Have a question about deploying DMDAS on your campus or need technical assistance? We are here to help.
           </p>
         </div>

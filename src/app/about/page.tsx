@@ -25,16 +25,16 @@ export default function AboutPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
             {/* Left Column */}
-            <div className="lg:col-span-6 space-y-6 text-center lg:text-left">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-red-50 border border-pink-100 text-[#E1193E] text-xs font-bold tracking-wider uppercase">
+            <div className="lg:col-span-6 space-y-6 text-center lg:text-left" data-aos="fade-right">
+              <div data-aos="fade-right" data-aos-delay="100" className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-red-50 border border-pink-100 text-[#E1193E] text-xs font-bold tracking-wider uppercase">
                 <span>ABOUT US</span>
               </div>
 
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-gray-900 leading-tight">
+              <h1 data-aos="fade-right" data-aos-delay="200" className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-gray-900 leading-tight">
                 About DMDAS
               </h1>
 
-              <div className="space-y-4 text-gray-600 text-sm sm:text-base leading-relaxed max-w-xl mx-auto lg:mx-0">
+              <div data-aos="fade-right" data-aos-delay="300" className="space-y-4 text-gray-600 text-sm sm:text-base leading-relaxed max-w-xl mx-auto lg:mx-0">
                 <p>
                   DMDAS (Digital Manual Distribution and Accountability System) is a smart solution built to simplify the distribution of course manuals in educational institutions.
                 </p>
@@ -43,7 +43,7 @@ export default function AboutPage() {
                 </p>
               </div>
 
-              <div className="pt-2">
+              <div data-aos="fade-right" data-aos-delay="400" className="pt-2">
                 <a
                   href="#purpose"
                   className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full bg-[#E1193E] hover:bg-[#C20E30] text-white font-semibold text-sm sm:text-base shadow-lg shadow-red-500/20 transition-all hover:scale-[1.02] active:scale-[0.98]"
@@ -55,7 +55,7 @@ export default function AboutPage() {
             </div>
 
             {/* Right Hero Visual */}
-            <div className="lg:col-span-6">
+            <div className="lg:col-span-6" data-aos="fade-left" data-aos-delay="200">
               <AboutImage />
             </div>
           </div>

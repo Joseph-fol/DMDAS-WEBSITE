@@ -49,20 +49,20 @@ export default function FaqPage() {
       {/* 1. HERO & SEARCH */}
       <section className="relative overflow-hidden pt-12 pb-16 bg-gradient-to-b from-[#FFF5F7] to-white border-b border-pink-100/60">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-red-50 border border-pink-100 text-[#E1193E] text-xs font-bold tracking-wider uppercase">
+          <div data-aos="fade-down" data-aos-delay="100" className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-red-50 border border-pink-100 text-[#E1193E] text-xs font-bold tracking-wider uppercase">
             <span>HELP & KNOWLEDGE BASE</span>
           </div>
 
-          <h1 className="text-4xl sm:text-5xl font-black text-gray-900 tracking-tight">
+          <h1 data-aos="fade-up" data-aos-delay="200" className="text-4xl sm:text-5xl font-black text-gray-900 tracking-tight">
             Frequently Asked <span className="text-[#E1193E]">Questions</span>
           </h1>
 
-          <p className="text-gray-600 text-sm sm:text-base max-w-xl mx-auto">
+          <p data-aos="fade-up" data-aos-delay="300" className="text-gray-600 text-sm sm:text-base max-w-xl mx-auto">
             Everything you need to know about manual distribution, keycode security, institution onboarding, and student access.
           </p>
 
           {/* Search bar */}
-          <div className="relative max-w-xl mx-auto mt-4">
+          <div data-aos="fade-up" data-aos-delay="400" className="relative max-w-xl mx-auto mt-4">
             <input
               type="text"
               value={searchQuery}

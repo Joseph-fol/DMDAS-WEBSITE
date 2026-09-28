@@ -126,21 +126,21 @@ export default function FeaturesPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
             {/* Left Column */}
-            <div className="lg:col-span-6 space-y-6 text-center lg:text-left">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-red-50 border border-pink-100 text-[#E1193E] text-xs font-bold tracking-wider uppercase">
+            <div className="lg:col-span-6 space-y-6 text-center lg:text-left" data-aos="fade-right">
+              <div data-aos="fade-right" data-aos-delay="100" className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-red-50 border border-pink-100 text-[#E1193E] text-xs font-bold tracking-wider uppercase">
                 <span>FEATURES</span>
               </div>
 
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-gray-900 leading-[1.15]">
+              <h1 data-aos="fade-right" data-aos-delay="200" className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-gray-900 leading-[1.15]">
                 Powerful Features. <br />
                 <span className="text-[#E1193E]">Built for Education.</span>
               </h1>
 
-              <p className="text-base sm:text-lg text-gray-600 max-w-xl mx-auto lg:mx-0 leading-relaxed">
+              <p data-aos="fade-right" data-aos-delay="300" className="text-base sm:text-lg text-gray-600 max-w-xl mx-auto lg:mx-0 leading-relaxed">
                 DMDAS is packed with features that make manual distribution smarter, faster, and more accountable for institutions and students.
               </p>
 
-              <div className="pt-2">
+              <div data-aos="fade-right" data-aos-delay="400" className="pt-2">
                 <Link href="https://app.dmdas.com.ng/signup"
                   className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full bg-[#E1193E] hover:bg-[#C20E30] text-white font-semibold text-sm sm:text-base shadow-lg shadow-red-500/20 transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
                 >
@@ -151,7 +151,7 @@ export default function FeaturesPage() {
             </div>
 
             {/* Right Hero Visual */}
-            <div className="lg:col-span-6">
+            <div className="lg:col-span-6" data-aos="fade-left" data-aos-delay="200">
               <HeroCampusVisual />
             </div>
           </div>
