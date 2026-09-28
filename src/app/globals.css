@@ -29,6 +29,29 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Shared AOS-style section reveals. The init class prevents a flash before the observer is ready. */
+.aos-section {
+  opacity: 0;
+  transform: translate3d(0, 28px, 0);
+  transition:
+    opacity 700ms cubic-bezier(0.22, 1, 0.36, 1) var(--aos-delay, 0ms),
+    transform 700ms cubic-bezier(0.22, 1, 0.36, 1) var(--aos-delay, 0ms);
+  will-change: opacity, transform;
+}
+
+.aos-section.aos-revealed {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aos-section {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
