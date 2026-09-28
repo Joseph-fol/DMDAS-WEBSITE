@@ -67,7 +67,7 @@ export default function KeycodeModal() {
         onClick={(e) => e.stopPropagation()}
       >
         {/* Modal Header */}
-        <div className="bg-gradient-to-r from-[#FFF0F3] to-white p-6 pb-5 border-b border-pink-100 flex items-center justify-between">
+        <div className="page-gradient-header bg-gradient-to-r from-[#FFF0F3] to-white p-6 pb-5 border-b border-pink-100 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-full bg-[#FFE4E9] flex items-center justify-center text-[#E1193E]">
               <KeyRound className="w-5 h-5" />
@@ -98,7 +98,7 @@ export default function KeycodeModal() {
                     type="text"
                     value={keycode}
                     onChange={(e) => setKeycode(e.target.value)}
-                    placeholder="e.g. ABCD-E7DA-LK1-MN9P"
+                    placeholder="e.g. DM-1234"
                     className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 font-mono text-sm tracking-wider focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#E1193E]/20 focus:border-[#E1193E] uppercase transition-all"
                   />
                   <div className="absolute right-3 top-3.5 text-xs text-gray-400">16-CHAR</div>
@@ -108,10 +108,10 @@ export default function KeycodeModal() {
                   <span className="text-[11px] text-gray-500">Try demo code:</span>
                   <button
                     type="button"
-                    onClick={() => setKeycode("ABCD-E7DA-LK1-MN9P")}
+                    onClick={() => setKeycode("DM-1234")}
                     className="text-[11px] font-mono text-[#E1193E] bg-red-50 hover:bg-red-100 px-2 py-0.5 rounded border border-red-200 transition-colors"
                   >
-                    ABCD-E7DA-LK1-MN9P
+                    DM-1234
                   </button>
                 </div>
               </div>
