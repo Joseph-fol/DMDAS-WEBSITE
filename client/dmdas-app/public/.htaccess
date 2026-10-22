@@ -1,0 +1,13 @@
+# 1. Enable Directory Indexes (serves index.html inside folders automatically)
+DirectoryIndex index.html
+
+# 2. Prevent browsing raw folders if index.html is missing
+Options -Indexes
+
+# 3. Handle Clean Next.js 404s
+ErrorDocument 404 /404.html
+
+# 4. Enable Gzip Compression for Fast Loading Speed
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript application/json
+</IfModule>

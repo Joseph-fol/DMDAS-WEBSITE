@@ -1,0 +1,151 @@
+@import "tailwindcss";
+@import "aos/dist/aos.css";
+
+@layer base {
+  :root {
+    --brand-red: #E1193E;
+    --brand-red-dark: #C20E30;
+    --brand-red-light: #FFF0F3;
+    --brand-red-subtle: #FDF2F4;
+    --brand-pink-border: #FCE7EC;
+    --text-primary: #1E293B;
+    --text-secondary: #64748B;
+    --card-bg: #FFFFFF;
+    --card-border: #F1F5F9;
+  }
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: "Satoshi" "Inter", "Segoe UI", Arial, sans-serif;
+  --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+}
+
+body {
+  color: #1E293B;
+  background-color: #FFFFFF;
+  overflow-x: hidden;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Dark theme overrides for the existing utility-based surface palette. */
+.dark body {
+  color: #E2E8F0;
+  background-color: #0F172A;
+}
+
+.page-gradient-header {
+  overflow-x: clip;
+}
+
+.dark .page-gradient-header {
+  background-color: #172033;
+  background-image: none;
+  border-color: #334155;
+}
+
+.dark .bg-white,
+.dark .bg-white\/95 {
+  background-color: #111827;
+}
+
+.dark [class~="bg-[#FAFBFD]"],
+.dark [class~="bg-gray-50"] {
+  background-color: #172033;
+}
+
+.dark [class~="bg-[#FFF5F7]"],
+.dark [class~="bg-red-50"] {
+  background-color: #321923;
+}
+
+.dark section[class~="from-[#FFF5F7]"] {
+  background-color: #172033;
+  background-image: none;
+}
+
+.dark [class~="bg-[#FFE4E9]"],
+.dark [class~="bg-red-100"] {
+  background-color: #4A202C;
+}
+
+.dark [class~="text-gray-900"] {
+  color: #F8FAFC;
+}
+
+.dark [class~="text-gray-700"] {
+  color: #CBD5E1;
+}
+
+.dark [class~="text-gray-600"],
+.dark [class~="text-gray-500"] {
+  color: #94A3B8;
+}
+
+.dark [class~="text-gray-400"] {
+  color: #64748B;
+}
+
+.dark [class~="border-gray-100"],
+.dark [class~="border-gray-200"],
+.dark [class~="border-gray-300"],
+.dark [class~="border-pink-100"] {
+  border-color: #334155;
+}
+
+.dark input,
+.dark textarea,
+.dark select {
+  color: #F8FAFC;
+  background-color: #1E293B;
+  border-color: #475569;
+}
+
+.dark input::placeholder,
+.dark textarea::placeholder {
+  color: #94A3B8;
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: #111827;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #475569;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #F8FAFC;
+}
+::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94A3B8;
+}
+
+/* Crimson gradient & shadows */
+.brand-gradient {
+  background: linear-gradient(135deg, #E1193E 0%, #D00D2D 100%);
+}
+
+.brand-shadow {
+  box-shadow: 0 10px 25px -5px rgba(225, 25, 62, 0.2), 0 8px 10px -6px rgba(225, 25, 62, 0.1);
+}
+
+.card-hover {
+  transition: all 0.25s ease-in-out;
+}
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.06), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+}
