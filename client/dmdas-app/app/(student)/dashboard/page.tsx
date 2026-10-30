@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 // import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import DashboardSkeleton from "@/components/dashboard/DashboardSkeleton";
 import { getString, getStudentRecords, toAmount } from "../../lib/studentApi";
 
 type UserProfile = {
@@ -172,6 +173,7 @@ export default function Dashboard() {
   const [studentName, setStudentName] = useState("Student");
   const [recentPayments, setRecentPayments] = useState<RecentPayment[]>([]);
   const [availableManuals, setAvailableManuals] = useState<AvailableManual[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
@@ -222,11 +224,17 @@ export default function Dashboard() {
         setAvailableManuals(availableManualRecords.map(normalizeAvailableManual));
       } catch (error) {
         console.error("Error fetching dashboard data:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
     fetchDashboardData();
   }, [router]);
+
+  if (isLoading) {
+    return <DashboardSkeleton />;
+  }
 
   const purchasedCount = recentPayments.length;
   const activeKeycodeCount = recentPayments.filter(

@@ -7,11 +7,11 @@ import {
   KeyRound,
   Inbox,
   Package,
-  Loader2,
   RefreshCw,
   X,
   CreditCard,
 } from 'lucide-react';
+import DashboardSkeleton from '@/components/dashboard/DashboardSkeleton';
 import { DashboardStats } from '../types/portal';
 import { getDashboardData, requestWithdrawal } from '../lib/api';
 import { useToast } from '../context/ToastContext';
@@ -68,12 +68,7 @@ export default function DashboardPage() {
   };
 
   if (loading) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-[60vh] gap-3">
-        <Loader2 className="w-8 h-8 text-[#E1193E] animate-spin" />
-        <p className="text-sm text-slate-500 font-medium">Loading...</p>
-      </div>
-    );
+    return <DashboardSkeleton />;
   }
 
   if (!data) return null;
