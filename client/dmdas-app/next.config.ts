@@ -1,10 +1,13 @@
 import type { NextConfig } from "next";
 import withSerwistInit from "@serwist/next";
 
+const isVercelBuild = process.env.VERCEL === "1";
+
 const withSerwist = withSerwistInit({
   swSrc: "app/sw.ts",
   swDest: "public/sw.js",
-  disable: false,
+  // Keep SW enabled locally, but disable during Vercel build where this plugin can fail.
+  disable: isVercelBuild,
   reloadOnOnline: true,
 });
 
