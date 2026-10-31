@@ -46,9 +46,9 @@ export default function Page() {
     loadTransactions();
   }, []);
 
-  if (isLoading) {
-      return <DashboardSkeleton />;
-    }
+  // if (isLoading) {
+  //     return <DashboardSkeleton />;
+  //   }
 
   const filteredTransactions = useMemo(
     () => activeTab === "All"
@@ -73,7 +73,7 @@ export default function Page() {
         </div>
 
         <Link
-          href="/"
+          href=""
           className="my-4 rounded-md bg-[#F8FAFC] px-2 py-2 text-sm font-semibold text-black shadow-sm"
         >
           Export
@@ -131,9 +131,9 @@ export default function Page() {
             ))}
           </div>
         </div>
-
+    {/* className="py-16 text-center text-sm text-slate-500" */}
         {isLoading ? (
-          <p className="py-16 text-center text-sm text-slate-500">Loading transactions...</p>
+          <p ><DashboardSkeleton /></p>
         ) : loadError ? (
           <p className="py-16 text-center text-sm text-rose-600">{loadError}</p>
         ) : (
