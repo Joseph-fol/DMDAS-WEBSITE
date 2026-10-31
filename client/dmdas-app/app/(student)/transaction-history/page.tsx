@@ -10,6 +10,7 @@ import { normalizeTransaction } from "./transactionUtils";
 import { FilterTab, Transaction } from "./types";
 import { KeycodeModal } from "../available-manuals/components/KeycodeModal";
 import { Manual } from "../available-manuals/data/manual";
+import DashboardSkeleton from "@/components/dashboard/DashboardSkeleton";
 
 const tabs: FilterTab[] = ["All", "Paid", "Failed", "Refunded"];
 
@@ -44,6 +45,10 @@ export default function Page() {
 
     loadTransactions();
   }, []);
+
+  if (isLoading) {
+      return <DashboardSkeleton />;
+    }
 
   const filteredTransactions = useMemo(
     () => activeTab === "All"
