@@ -3,9 +3,12 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { sendPinResetEmail } = require("../services/resetPin.service");
 const { sendWelcomeEmail } = require("../services/welcomeEmail.service");
+const { getJson, setJson, deleteKey } = require("../util/redis");
 
 require("dotenv").config();
 const jwtSecretKey = process.env.jwtSecretKey;
+const PIN_RESET_OTP_TTL_SECONDS = 600; // 10 minutes in seconds
+const getPinResetOtpKey = (otp) => `pin-reset:otp:${otp}`;
 
 const userSignup = async (req, res) => {
   const { fullName, email, matricNumber, department, phoneNumber, level, pin, role } = req.body;
@@ -137,9 +140,11 @@ const requestPinReset = async (req, res) => {
     }
 
     const generatedOTP = Math.floor(100000 + Math.random() * 900000).toString();
-    user.pinResetOTP = generatedOTP;
-    user.pinResetExpires = Date.now() + 600000;
-    await user.save();
+    await setJson(
+      getPinResetOtpKey(generatedOTP),
+      { email: user.email },
+      PIN_RESET_OTP_TTL_SECONDS
+    );
 
     await sendPinResetEmail(user.email, user.fullName, generatedOTP);
     console.log(`OTP sent to ${user.email}`);
@@ -168,9 +173,11 @@ const requestPinResetByEmail = async (req, res) => {
     }
 
     const generatedOTP = Math.floor(100000 + Math.random() * 900000).toString();
-    user.pinResetOTP = generatedOTP;
-    user.pinResetExpires = Date.now() + 600000;
-    await user.save();
+    await setJson(
+      getPinResetOtpKey(generatedOTP),
+      { email: user.email },
+      PIN_RESET_OTP_TTL_SECONDS
+    );
 
     await sendPinResetEmail(user.email, user.fullName, generatedOTP);
     console.log(`PIN reset OTP sent to ${user.email}`);
@@ -193,10 +200,8 @@ const resetPinWithOTP = async (req, res) => {
   }
 
   try {
-    const user = await User.findOne({
-      pinResetOTP: otp,
-      pinResetExpires: { $gt: Date.now() },
-    });
+    const cachedOtp = await getJson(getPinResetOtpKey(otp));
+    const user = cachedOtp ? await User.findOne({ email: cachedOtp.email }) : null;
 
     if (!user) {
       return res.status(400).json({ message: "Invalid or expired OTP." });
@@ -204,10 +209,9 @@ const resetPinWithOTP = async (req, res) => {
 
     const salt = await bcrypt.genSalt(10);
     user.pin = await bcrypt.hash(newPin, salt);
-    user.pinResetOTP = undefined;
-    user.pinResetExpires = undefined;
 
     await user.save();
+    await deleteKey(getPinResetOtpKey(otp));
     res.status(200).json({ message: "Your PIN has been successfully reset." });
   } catch (error) {
     console.error("Error during resetPinWithOTP:", error);
@@ -241,8 +245,6 @@ const resetPasswordSetting = async (req, res) => {
 
     const salt = await bcrypt.genSalt(10);
     userDetails.pin = await bcrypt.hash(newPin, salt);
-    userDetails.pinResetOTP = undefined;
-    userDetails.pinResetExpires = undefined;
 
     await userDetails.save();
     res.status(200).json({ message: "PIN has been reset successfully." });
