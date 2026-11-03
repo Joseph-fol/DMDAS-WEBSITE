@@ -56,7 +56,7 @@ const isStudent = (req, res, next) =>{
         next()
     } else {
         return res.status(403).json({
-            statuse: false,
+            status: false,
             message: "Only student can perform this task"
         })
     }

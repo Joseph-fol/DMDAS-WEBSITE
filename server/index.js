@@ -23,6 +23,10 @@ app.use(cors({
 const URI = process.env.MONGO_URI;
 const port = process.env.PORT || 5000;
 
+const dns = require("node:dns");
+dns.setDefaultResultOrder('ipv4first')
+dns.setServers(['8.8.8.8', '8.8.4.4'])
+
 let mongoConnectionPromise;
 
 const connectToMongo = () => {

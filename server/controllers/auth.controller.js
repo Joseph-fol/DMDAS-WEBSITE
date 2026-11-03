@@ -141,12 +141,6 @@ const requestPinReset = async (req, res) => {
     user.pinResetExpires = Date.now() + 600000;
     await user.save();
 
-    // await client.messages.create({
-    //   from: "whatsapp:+14155238886",
-    //   to: `whatsapp:+2348125831469`,
-    //   body: `Your DMDAS verification code is ${generatedOTP}. It will expire in 10 minutes.`,
-    // });
-
     await sendPinResetEmail(user.email, user.fullName, generatedOTP);
     console.log(`OTP sent to ${user.email}`);
 
