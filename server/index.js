@@ -17,7 +17,8 @@ app.use(cors());
 app.use(cors({
     origin: "*",
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    credentials: true
+    credentials: true,
+    exposedHeaders: ["RateLimit-Remaining", "RateLimit-Limit", "RateLimit-Reset", "Retry-After"]
 }));
 
 const URI = process.env.MONGO_URI;

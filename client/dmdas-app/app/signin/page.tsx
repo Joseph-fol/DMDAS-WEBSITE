@@ -47,6 +47,7 @@ export default function Signin() {
   const pinInputRefs = useRef<Array<HTMLInputElement | null>>([]);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [remainingAttempts, setRemainingAttempts] = useState<number | null>(null);
 
   useEffect(() => {
     if (successMessage) {
@@ -68,6 +69,7 @@ export default function Signin() {
   ) => {
     setSuccessMessage(null);
     setErrorMessage(null);
+    setRemainingAttempts(null);
 
     const payload = {
       matricNumber: values.matricNumber.trim(),
@@ -78,6 +80,12 @@ export default function Signin() {
       const response = await axios.post<SigninResponse>(
         apiUrl("/api/signin"),
         payload,
+      );
+      
+      const remainingHeader = response.headers["ratelimit-remaining"];
+      const remaining = Number(remainingHeader);
+      setRemainingAttempts(
+        Number.isInteger(remaining) && remaining >= 0 ? remaining : null,
       );
       setSuccessMessage(
         response.data.message ?? "Access granted successfully.",
@@ -103,6 +111,11 @@ export default function Signin() {
 
     } catch (error) {
       if (axios.isAxiosError(error)) {
+        const remainingHeader = error.response?.headers["ratelimit-remaining"];
+        const remaining = Number(remainingHeader);
+        setRemainingAttempts(
+          Number.isInteger(remaining) && remaining >= 0 ? remaining : null,
+        );
         setErrorMessage(
           (error.response?.data as { message?: string } | undefined)?.message ??
             error.message ??
@@ -183,6 +196,15 @@ export default function Signin() {
             {errorMessage ? (
               <div className="mb-5 rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm font-medium text-rose-800">
                 {errorMessage}
+              </div>
+            ) : null}
+
+            {remainingAttempts !== null ? (
+              <div
+                className="mb-5 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm font-medium text-amber-800"
+                role="status"
+              >
+                Remaining login attempts: {remainingAttempts}
               </div>
             ) : null}
 
