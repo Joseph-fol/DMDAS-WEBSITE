@@ -92,7 +92,7 @@ export default function DashboardNavbar({ isSidebarOpen, setIsSidebarOpen }: Das
           <h2 className="text-sm font-semibold text-slate-800 sm:text-base">{title}</h2>
         </div>
 
-        <div className="flex items-center gap-4">
+        <div className="flex min-w-0 items-center gap-2 sm:gap-4">
           <div className="relative">
             <button
               type="button"
@@ -113,7 +113,7 @@ export default function DashboardNavbar({ isSidebarOpen, setIsSidebarOpen }: Das
             </button>
 
             {isNotificationsOpen && (
-              <div className="absolute right-0 top-11 z-30 w-[calc(100vw-2rem)] max-w-xs overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xl">
+              <div className="fixed inset-x-2 top-[4.5rem] z-30 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xl sm:absolute sm:inset-x-auto sm:right-0 sm:top-11 sm:w-96 sm:max-w-[calc(100vw-2rem)]">
                 <div className="flex items-center justify-between border-b border-slate-100 px-4 py-3">
                   <h3 className="text-sm font-semibold text-slate-900">Notifications</h3>
                   <span className="text-xs text-slate-400">{unreadCount} unread</span>
