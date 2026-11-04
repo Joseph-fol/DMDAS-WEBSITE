@@ -15,7 +15,15 @@ const addManual = async (req, res) => {
   const { courseCode, courseTitle, price, printedStock, semester } = req.body;
   const repId = req.user._id;
 
-  if (!courseCode || !courseTitle || !price || !semester) {
+  if (
+    !courseCode ||
+    !courseTitle ||
+    price === undefined ||
+    price === null ||
+    printedStock === undefined ||
+    printedStock === null ||
+    !["Harmattan", "Rain"].includes(semester)
+  ) {
     return res.status(400).json({ message: "All manual fields are required." });
   }
 
@@ -74,9 +82,24 @@ const addManual = async (req, res) => {
 const editManual = async (req, res) => {
   const { id } = req.params;
   const repId = req.user._id;
-  const { courseCode, courseTitle, price, printedStock, semester } = req.body;
+  const { courseCode, courseTitle, price, printedStock, isAvailable } = req.body;
 
-  if (!courseCode || !courseTitle || !price || !printedStock || !semester) {
+  const isStatusUpdate =
+    typeof isAvailable === "boolean" &&
+    courseCode === undefined &&
+    courseTitle === undefined &&
+    price === undefined &&
+    printedStock === undefined;
+
+  if (
+    !isStatusUpdate &&
+    (!courseCode ||
+      !courseTitle ||
+      price === undefined ||
+      price === null ||
+      printedStock === undefined ||
+      printedStock === null)
+  ) {
     return res.status(400).json({ message: "All manual fields are required." });
   }
 
@@ -92,13 +115,9 @@ const editManual = async (req, res) => {
       });
     }
 
-    const manualUpdates = {
-      courseCode,
-      courseTitle,
-      price,
-      printedStock,
-      semester,
-    };
+    const manualUpdates = isStatusUpdate
+      ? { isAvailable }
+      : { courseCode, courseTitle, price, printedStock };
 
     const editedManual = await AddManual.findByIdAndUpdate(id, manualUpdates, { returnDocument: "after" });
     await invalidateManualCatalog();

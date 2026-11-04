@@ -72,8 +72,26 @@ export default function ManualsPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.courseTitle || !formData.courseCode || !formData.price) {
-      showToast("Please fill out all required fields", "error");
+    const price = Number(formData.price);
+    const printedStock = Number(formData.printedStock);
+
+    if (!formData.courseTitle.trim() || !formData.courseCode.trim()) {
+      showToast("Course title and course code are required", "error");
+      return;
+    }
+
+    if (!Number.isFinite(price) || price <= 0) {
+      showToast("Enter a valid price greater than zero", "error");
+      return;
+    }
+
+    if (!Number.isInteger(printedStock) || printedStock < 0) {
+      showToast("Enter a valid printed stock quantity", "error");
+      return;
+    }
+
+    if (!editingManual && !["Harmattan", "Rain"].includes(formData.semester)) {
+      showToast("Select a semester", "error");
       return;
     }
 
@@ -83,9 +101,8 @@ export default function ManualsPage() {
         await updateManual(editingManual.id, {
           courseTitle: formData.courseTitle,
           courseCode: formData.courseCode.toUpperCase(),
-          price: Number(formData.price),
-          semester: formData.semester,
-          printedStock: Number(formData.printedStock),
+          price,
+          printedStock,
         });
         showToast("Manual updated successfully!", "success");
       } else {
@@ -93,9 +110,9 @@ export default function ManualsPage() {
         await createManual({
           courseTitle: formData.courseTitle,
           courseCode: formData.courseCode.toUpperCase(),
-          price: Number(formData.price),
+          price,
           semester: formData.semester,
-          printedStock: Number(formData.printedStock),
+          printedStock,
         });
         showToast("New course manual added successfully!", "success");
       }
@@ -353,11 +370,16 @@ export default function ManualsPage() {
                   </label>
                   <select
                     value={formData.semester}
+                    disabled={Boolean(editingManual)}
+                    required={!editingManual}
                     onChange={(e) =>
                       setFormData({ ...formData, semester: e.target.value })
                     }
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-slate-900 text-xs bg-white focus:outline-none focus:ring-2 focus:ring-red-100 focus:border-[#E1193E]"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-slate-900 text-xs bg-white focus:outline-none focus:ring-2 focus:ring-red-100 focus:border-[#E1193E] disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-500"
                   >
+                    <option value="" disabled>
+                      Select option
+                    </option>
                     <option value="Harmattan">Harmattan</option>
                     <option value="Rain">Rain</option>
                   </select>
