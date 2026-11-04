@@ -1,6 +1,7 @@
 const User = require("../models/user.model");
 const Transaction = require("../models/transaction.model");
 const AddManual = require("../models/manual.model");
+const Notification = require("../models/notification.model");
 const {
   getJson,
   setJson,
@@ -27,6 +28,29 @@ const addManual = async (req, res) => {
       semester,
       addedBy: repId,
     });
+
+    try {
+      const students = await User.find({
+        role: "student",
+        department: req.user.department,
+        level: req.user.level,
+      })
+        .select("_id")
+        .lean();
+
+      if (students.length > 0) {
+        await Notification.insertMany(
+          students.map((student) => ({
+            user: student._id,
+            title: "New course manual available",
+            message: `${courseCode} - ${courseTitle} is now available for purchase.`,
+            type: "manual_available",
+          })),
+        );
+      }
+    } catch (notificationError) {
+      console.error("Error notifying students about new manual:", notificationError);
+    }
     
     await invalidateManualCatalog();
     await invalidateRepPortal(repId);

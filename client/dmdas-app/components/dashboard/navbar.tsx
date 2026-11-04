@@ -65,6 +65,11 @@ export default function DashboardNavbar({ isSidebarOpen, setIsSidebarOpen }: Das
     };
 
     void loadNotifications();
+    const intervalId = window.setInterval(() => {
+      void loadNotifications();
+    }, 30000);
+
+    return () => window.clearInterval(intervalId);
   }, []);
 
   // Derive initials for avatar
