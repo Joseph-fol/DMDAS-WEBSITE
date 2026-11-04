@@ -67,6 +67,11 @@ type PaymentConfirmation = {
   keycode: string;
 };
 
+type StudentDetails = {
+  department: string;
+  level: string;
+};
+
 function formatCurrency(n: number | string | undefined | null) {
   if (n === undefined || n === null || n === "") return "₦0";
   if (typeof n === "string") {
@@ -82,8 +87,10 @@ const getManualCode = (m: Manual | null): string =>
   m?.courseCode || m?.code || "MANUAL";
 const getManualTitle = (m: Manual | null): string =>
   m?.courseTitle || m?.title || "Course Manual";
-const getManualDept = (m: Manual | null): string => m?.department || "N/A";
-const getManualLevel = (m: Manual | null): string => m?.level || "N/A";
+const getManualDept = (m: Manual | null, studentDepartment: string): string =>
+  m?.department || studentDepartment || "N/A";
+const getManualLevel = (m: Manual | null, studentLevel: string): string =>
+  m?.level || studentLevel || "N/A";
 const getManualPrice = (m: Manual | null): string => formatCurrency(m?.price);
 const getManualCodeValue = (m: Manual): string =>
   String(m.courseCode || m.code || "").trim().toLowerCase();
@@ -149,6 +156,28 @@ const getRepLevel = (m: Manual | null): string => {
 };
 
 export default function PurchaseManual() {
+  const [studentDetails] = useState<StudentDetails>(() => {
+    try {
+      const storedStudent = sessionStorage.getItem("Student");
+      const parsedStudent = storedStudent
+        ? (JSON.parse(storedStudent) as Record<string, unknown>)
+        : {};
+
+      return {
+        department:
+          typeof parsedStudent.department === "string"
+            ? parsedStudent.department
+            : "",
+        level:
+          typeof parsedStudent.level === "string" ||
+          typeof parsedStudent.level === "number"
+            ? String(parsedStudent.level)
+            : "",
+      };
+    } catch {
+      return { department: "", level: "" };
+    }
+  });
   const [selectedId, setSelectedId] = useState<string>("");
   const [manuals, setManuals] = useState<Manual[]>([]);
   const [purchasedKeys, setPurchasedKeys] = useState<Set<string>>(new Set());
@@ -661,7 +690,7 @@ export default function PurchaseManual() {
                           Department
                         </div>
                         <div className="mt-1 font-bold text-slate-800 text-sm">
-                          {getManualDept(selected)}
+                          {getManualDept(selected, studentDetails.department)}
                         </div>
                       </div>
 
@@ -670,7 +699,7 @@ export default function PurchaseManual() {
                           Level
                         </div>
                         <div className="mt-1 font-bold text-slate-800 text-sm">
-                          {getManualLevel(selected)}
+                          {getManualLevel(selected, studentDetails.level)}
                         </div>
                       </div>
 
@@ -800,7 +829,8 @@ export default function PurchaseManual() {
                           {getManualCode(selected)} — {getManualTitle(selected)}
                         </div>
                         <div className="text-xs text-slate-500 font-medium mt-0.5">
-                          {getManualDept(selected)} · {getManualLevel(selected)}
+                          {getManualDept(selected, studentDetails.department)} ·{" "}
+                          {getManualLevel(selected, studentDetails.level)}
                         </div>
                       </div>
                     </div>
@@ -817,7 +847,7 @@ export default function PurchaseManual() {
 
                   <div className="mt-3 pt-3 border-t border-slate-200/60 flex flex-col sm:flex-row items-start sm:items-center justify-between text-xs gap-1">
                     <span className="text-slate-500 font-medium">
-                      Course Rep Pickup Contact:
+                      Course Rep Detail:
                     </span>
                     <span className="font-bold text-slate-800">
                       {getRepFullName(selected)} ({getRepDepartment(selected)} ·{" "}
@@ -906,8 +936,9 @@ export default function PurchaseManual() {
                     code: getManualCode(paymentManual),
                     title: getManualTitle(paymentManual),
                     price: paymentManual.price || 0,
-                    department: paymentManual.department,
-                    level: paymentManual.level,
+                    department:
+                      paymentManual.department || studentDetails.department,
+                    level: paymentManual.level || studentDetails.level,
                     description: paymentManual.description,
                     details: paymentManual.details,
                     semester: paymentManual.semester,
