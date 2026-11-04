@@ -15,7 +15,6 @@ import {
   ChevronLeft,
   ChevronRight,
   LogOut,
-  Book,
   Settings,
 } from 'lucide-react';
 import { useRepProfile } from '@/app/lib/repProfile';
@@ -59,9 +58,14 @@ export default function PortalSidebar({ onCloseMobile }: PortalSidebarProps) {
             onClick={onCloseMobile}
             className="flex items-center gap-2.5 overflow-hidden"
           >
-            {/* <Image src="" height="200px" width="100px"></Image> */}
-            <div className="w-9 h-9 rounded-xl bg-[#E1193E] flex items-center justify-center text-white shrink-0 shadow-sm">
-              <Book className="w-5 h-5 fill-white stroke-none" />
+            <div className="w-9 h-9 flex items-center justify-center shrink-0">
+              <Image
+                src="/dmdas-logo.png"
+                alt="DMDAS logo"
+                width={36}
+                height={36}
+                className="h-9 w-9 object-contain"
+              />
             </div>
 
             {!collapsed && (

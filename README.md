@@ -193,6 +193,23 @@ Primary fields:
 
 This model is central to the purchase and pickup flow.
 
+#### Notification model (`server/models/notification.model.js`)
+
+Stores authenticated user notifications in MongoDB.
+
+Primary fields:
+
+- `user`
+- `title`
+- `message`
+- `type`
+- `read`
+- `createdAt`, `updatedAt`
+
+Notifications are created by backend workflows, including welcome messages and
+new manual announcements targeted to students whose department and level match
+the representative who added the manual.
+
 ---
 
 ## 6. Backend Routes
@@ -347,6 +364,27 @@ The transaction lifecycle works like this:
 6. Backend verifies the transaction and updates the transaction status to `PAID`
 7. Student receives the keycode and can claim their manual from the rep
 
+### 8.6 Notifications
+
+Notifications are persisted by the backend and retrieved for the authenticated
+user through:
+
+```http
+GET /api/notifications
+PATCH /api/notifications/read
+```
+
+The student dashboard displays notifications in the navbar bell menu and in the
+Profile settings Notifications tab. The navbar shows the unread count, refreshes
+notifications periodically, supports a “View all” link to the profile settings
+page, and displays `No notifications` when the user has none.
+
+The notification popup is responsive across device sizes:
+
+- on mobile, it uses viewport-safe horizontal margins and full available width
+- on larger screens, it remains a right-aligned dropdown below the notification bell
+- notification content wraps long titles and messages without causing horizontal overflow
+
 ---
 
 ## 9. Payment Integration
@@ -462,6 +500,14 @@ Important pages include:
 - `app/(student)/my-profile-settings/page.tsx` — account settings
 
 Students access protected areas through a session token stored in `sessionStorage` and validated by the backend.
+
+The dashboard navbar includes:
+
+- authenticated backend notifications
+- unread notification count
+- responsive notification popup for mobile and desktop
+- empty-state messaging when no notifications exist
+- navigation to all notifications in Profile settings
 
 ### Marketing website (`client/dmdas-website`)
 
