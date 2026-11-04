@@ -149,7 +149,30 @@ const invalidateManualCatalog = async () => {
 };
 
 const invalidateTransactionHistory = async (studentId) => {
-  await deleteKey(`transactions:history:${studentId}`);
+  const redis = getClient();
+  if (!redis) return;
+
+  try {
+    if (!(await waitForConnection(redis))) return;
+
+    await redis.incr(`transactions:history:version:${studentId}`);
+  } catch (error) {
+    console.error("Redis transaction history invalidation failed:", error.message);
+  }
+};
+
+const getTransactionHistoryVersion = async (studentId) => {
+  const redis = getClient();
+  if (!redis) return "0";
+
+  try {
+    if (!(await waitForConnection(redis))) return "0";
+
+    return (await redis.get(`transactions:history:version:${studentId}`)) || "0";
+  } catch (error) {
+    console.error("Redis transaction history version read failed:", error.message);
+    return "0";
+  }
 };
 
 const invalidatePurchasedManuals = async (studentId) => {
@@ -165,5 +188,6 @@ module.exports = {
   invalidateManualCatalog,
   invalidateRepPortal,
   invalidateTransactionHistory,
+  getTransactionHistoryVersion,
   invalidatePurchasedManuals,
 };

@@ -73,3 +73,40 @@ export function getStudentTransactions(
 ): Promise<Record<string, unknown>[]> {
   return getStudentRecords("/api/student/transactionHistory", token);
 }
+
+export type StudentTransactionPage = {
+  records: Record<string, unknown>[];
+  page: number;
+  limit: number;
+  total: number;
+  totalPages: number;
+};
+
+export async function getStudentTransactionPage(
+  token: string | null,
+  page: number,
+  limit: number,
+  status?: string,
+): Promise<StudentTransactionPage> {
+  const params = new URLSearchParams({
+    page: String(page),
+    limit: String(limit),
+  });
+  if (status && status !== "All") params.set("status", status.toUpperCase());
+
+  const response = await axios.get(
+    studentApiUrl(`/api/student/transactionHistory?${params.toString()}`),
+    studentRequestConfig(token),
+  );
+  const data = isRecord(response.data) ? response.data : {};
+  const pagination = isRecord(data.pagination) ? data.pagination : {};
+
+  return {
+    records: responseRecords(data.transactions),
+    page: typeof pagination.page === "number" ? pagination.page : page,
+    limit: typeof pagination.limit === "number" ? pagination.limit : limit,
+    total: typeof pagination.total === "number" ? pagination.total : 0,
+    totalPages:
+      typeof pagination.totalPages === "number" ? pagination.totalPages : 0,
+  };
+}

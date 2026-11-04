@@ -218,7 +218,7 @@ All routes are mounted under `/api` in `server/index.js`.
 | --- | --- | --- |
 | POST | `/api/student/initializeTransaction` | Start Paystack payment |
 | GET | `/api/student/verifyPayment` | Verify a transaction against Paystack |
-| GET | `/api/student/transactionHistory` | Get transaction history |
+| GET | `/api/student/transactionHistory` | Get paginated transaction history (`page`, `limit` up to 50, optional `status=PAID|FAILED`) |
 | GET | `/api/student/purchasedManuals` | Get manuals already paid for |
 | POST | `/api/student/searchManuals` | Search manuals in the student’s context |
 | GET | `/api/student/availableManuals` | Get department-level manuals available for purchase |

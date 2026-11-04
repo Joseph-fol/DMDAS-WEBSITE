@@ -2,7 +2,7 @@
 
 import React, { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { getStudentTransactions } from "../../lib/studentApi";
+import { getStudentTransactionPage } from "../../lib/studentApi";
 import TransactionList from "./components/TransactionList";
 import TransactionStats from "./components/TransactionStats";
 import { normalizeTransaction } from "./transactionUtils";
@@ -84,6 +84,9 @@ export default function Page() {
   const [isLoading, setIsLoading] = useState(true);
   const [loadError, setLoadError] = useState("");
   const [selectedManual, setSelectedManual] = useState<Manual | null>(null);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const pageSize = 10;
 
   useEffect(() => {
     const loadTransactions = async () => {
@@ -91,13 +94,22 @@ export default function Page() {
         const token = sessionStorage.getItem("token");
         if (!token) {
           setLoadError("No transactions");
+          setIsLoading(false);
           return;
         }
 
-        const records = await getStudentTransactions(token);
-        setTransactions(
-          records.map(normalizeTransaction).filter((transaction) => transaction.id),
+        const transactionPage = await getStudentTransactionPage(
+          token,
+          page,
+          pageSize,
+          activeTab,
         );
+        setTransactions(
+          transactionPage.records
+            .map(normalizeTransaction)
+            .filter((transaction) => transaction.id),
+        );
+        setTotalPages(transactionPage.totalPages);
       } catch {
         setLoadError("No transactions");
       } finally {
@@ -106,7 +118,7 @@ export default function Page() {
     };
 
     loadTransactions();
-  }, []);
+  }, [activeTab, page]);
 
   const filteredTransactions = useMemo(
     () => activeTab === "All"
@@ -210,6 +222,7 @@ export default function Page() {
                 type="button"
                 onClick={() => {
                   setActiveTab(tab);
+                  setPage(1);
                   setOpenId(null);
                 }}
                 className={`shrink-0 rounded-lg px-4 py-1.5 transition-all duration-150 ${
@@ -232,6 +245,32 @@ export default function Page() {
             openId={openId}
             onToggle={(id) => setOpenId((current) => (current === id ? null : id))}
           />
+        )}
+        
+        {totalPages > 1 && (
+          <div className="mt-6 flex items-center justify-between border-t border-slate-100 pt-4">
+            <button
+              type="button"
+              onClick={() => setPage((current) => Math.max(1, current - 1))}
+              disabled={page === 1}
+              className="rounded-md border border-slate-200 px-3 py-2 text-sm font-medium text-slate-700 disabled:cursor-not-allowed disabled:opacity-40"
+            >
+              Previous
+            </button>
+            <span className="text-sm text-slate-500">
+              Page {page} of {totalPages}
+            </span>
+            <button
+              type="button"
+              onClick={() =>
+                setPage((current) => Math.min(totalPages, current + 1))
+              }
+              disabled={page === totalPages}
+              className="rounded-md border border-slate-200 px-3 py-2 text-sm font-medium text-slate-700 disabled:cursor-not-allowed disabled:opacity-40"
+            >
+              Next
+            </button>
+          </div>
         )}
       </div>
     </section>

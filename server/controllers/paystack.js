@@ -7,6 +7,7 @@ const {
     setJson,
     invalidateManualCatalog,
     invalidateTransactionHistory,
+    getTransactionHistoryVersion,
     invalidatePurchasedManuals,
     invalidateRepPortal
 } = require("../util/redis");
@@ -343,23 +344,41 @@ const verifyPayment = async (req, res) => {
 };
 
 const getTransactionHistory = async (req, res) => {
-    const cacheKey = `transactions:history:${req.user._id}`;
+    const requestedPage = Number.parseInt(req.query.page, 10);
+    const requestedLimit = Number.parseInt(req.query.limit, 10);
+    const page = Number.isInteger(requestedPage) && requestedPage > 0 ? requestedPage : 1;
+    const limit = Number.isInteger(requestedLimit)
+        ? Math.min(Math.max(requestedLimit, 1), 50)
+        : 10;
+    const status = ["PAID", "FAILED"].includes(String(req.query.status || "").toUpperCase())
+        ? String(req.query.status).toUpperCase()
+        : null;
+    const version = await getTransactionHistoryVersion(req.user._id);
+
+    const cacheKey = `transactions:history:${req.user._id}:${version}:${page}:${limit}:${status || "ALL"}`;
     try {
         const cachedResponse = await getJson(cacheKey);
         if (cachedResponse) {
             return res.status(200).json(cachedResponse);
         }
 
-        const transactions = await Transaction.find({
+        const query = {
             student: req.user._id,
-            status: { $in: ["PAID", "FAILED"] },
-        })
+            status: status ? status : { $in: ["PAID", "FAILED"] },
+        };
+        
+        const [total, transactions] = await Promise.all([
+            Transaction.countDocuments(query),
+            Transaction.find(query)
             .sort({ paymentDate: -1, date: -1 })
+            .skip((page - 1) * limit)
+            .limit(limit)
             .populate({
                 path: "manual",
                 select: "courseTitle addedBy",
                 populate: { path: "addedBy", select: "fullName" },
-            });
+            }),
+        ]);
 
         const transactionHistory = transactions.map(transaction => {
             const manual = transaction.manual;
@@ -379,7 +398,15 @@ const getTransactionHistory = async (req, res) => {
             };
         });
 
-        const responsePayload = { transactions: transactionHistory };
+        const responsePayload = {
+            transactions: transactionHistory,
+            pagination: {
+                page,
+                limit,
+                total,
+                totalPages: Math.ceil(total / limit),
+            },
+        };
         await setJson(cacheKey, responsePayload);
 
         return res.status(200).json(responsePayload);
