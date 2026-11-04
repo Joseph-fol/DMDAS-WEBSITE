@@ -209,6 +209,8 @@ All routes are mounted under `/api` in `server/index.js`.
 | POST | `/api/requestPinByEmail` | Request PIN reset by email |
 | POST | `/api/resetPin` | Reset PIN with OTP |
 | GET | `/api/profile` | Get authenticated user profile |
+| GET | `/api/notifications` | Get authenticated user notifications |
+| PATCH | `/api/notifications/read` | Mark authenticated user notifications as read |
 | PUT | `/api/updatePinSetting` | Update authenticated user's PIN |
 | PUT | `/api/updateProfileSetting` | Update authenticated user profile info |
 

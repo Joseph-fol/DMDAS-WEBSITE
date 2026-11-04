@@ -1,5 +1,6 @@
 const User = require("../models/user.model");
 const Transaction = require("../models/transaction.model");
+const Notification = require("../models/notification.model");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { sendPinResetEmail } = require("../services/resetPin.service");
@@ -41,6 +42,12 @@ const userSignup = async (req, res) => {
     });
 
     await newUserInformation.save();
+    await Notification.create({
+      user: newUserInformation._id,
+      title: "Welcome to DMDAS",
+      message: "Your student account is ready for manual purchases and pickup.",
+      type: "welcome",
+    });
     console.log("User details successfully saved");
 
     try {

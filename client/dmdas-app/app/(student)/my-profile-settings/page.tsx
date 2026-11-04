@@ -4,6 +4,11 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { apiUrl } from "../../lib/apiUrl";
 import { studentRequestConfig } from "../../lib/studentApi";
+import {
+  getStudentNotifications,
+  markStudentNotificationsRead,
+  StudentNotification,
+} from "../../lib/notifications";
 
 type StudentProfile = {
   fullName: string;
@@ -137,7 +142,15 @@ export default function Page() {
 
   const [activeTab, setActiveTab] = useState<
     "personal" | "security" | "notifications" | "activity"
-  >("personal");
+  >(() =>
+    typeof window !== "undefined" &&
+    new URLSearchParams(window.location.search).get("tab") === "notifications"
+      ? "notifications"
+      : "personal",
+  );
+  const [notifications, setNotifications] = useState<StudentNotification[]>(() =>
+    [],
+  );
 
   // Profile Edit State
   const [isEditingProfile, setIsEditingProfile] = useState(false);
@@ -151,6 +164,22 @@ export default function Page() {
   const [profileMessage, setProfileMessage] = useState<string | null>(null);
   const [profileError, setProfileError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const loadNotifications = async () => {
+      try {
+        setNotifications(
+          await getStudentNotifications(sessionStorage.getItem("token")),
+        );
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          console.error("Unable to load notifications:", error.message);
+        }
+      }
+    };
+
+    void loadNotifications();
+  }, []);
 
   useEffect(() => {
     const loadProfile = async () => {
@@ -842,7 +871,51 @@ export default function Page() {
 
           {activeTab === "notifications" && (
             <div className="rounded-2xl border border-slate-200 bg-white p-6">
-              Notifications settings placeholder
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="text-lg font-semibold">Notifications</h3>
+                  <p className="text-sm text-slate-400">
+                    Updates about your account, purchases, and manual pickup.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    const updated = notifications.map((notification) => ({
+                      ...notification,
+                      read: true,
+                    }));
+                    setNotifications(updated);
+                    void markStudentNotificationsRead(
+                      sessionStorage.getItem("token"),
+                    );
+                  }}
+                  className="text-sm font-medium text-rose-600 hover:underline"
+                >
+                  Mark all as read
+                </button>
+              </div>
+              <div className="mt-6 divide-y divide-slate-100">
+                {notifications.map((notification) => (
+                  <div key={notification.id} className="py-4 first:pt-0 last:pb-0">
+                    <div className="flex items-start justify-between gap-4">
+                      <div>
+                        <p className="font-semibold text-slate-800">{notification.title}</p>
+                        <p className="mt-1 text-sm text-slate-500">{notification.message}</p>
+                        <p className="mt-2 text-xs text-slate-400">{notification.createdAt}</p>
+                      </div>
+                      {!notification.read && (
+                        <span className="mt-1 h-2.5 w-2.5 shrink-0 rounded-full bg-rose-500" />
+                      )}
+                    </div>
+                  </div>
+                ))}
+                {notifications.length === 0 && (
+                  <p className="py-8 text-center text-sm text-slate-500">
+                    You have no notifications.
+                  </p>
+                )}
+              </div>
             </div>
           )}
 
