@@ -123,6 +123,11 @@ type AvailableManual = {
   price: number;
 };
 
+type StudentDetails = {
+  department: string;
+  level: string;
+};
+
 function normalizeRecentPayment(record: Record<string, unknown>): RecentPayment {
   return {
     id: getString(record, ["paystackReference", "id", "_id", "transactionId", "reference"]),
@@ -151,13 +156,29 @@ function getFirstName(name: string): string {
   return name.trim().split(/\s+/)[0] || "Student";
 }
 
-function normalizeAvailableManual(record: Record<string, unknown>): AvailableManual {
+function normalizeAvailableManual(
+  record: Record<string, unknown>,
+  studentDetails: StudentDetails,
+): AvailableManual {
+  const addedBy =
+    record.addedBy && typeof record.addedBy === "object"
+      ? (record.addedBy as Record<string, unknown>)
+      : {};
+
   return {
     id: getNestedString(record, ["id", "_id", "manualId", "courseId"]),
     code: getNestedString(record, ["courseCode", "code", "manualCode"]) || "MANUAL",
     title: getNestedString(record, ["courseTitle", "title", "manualTitle"]) || "Course Manual",
-    department: getNestedString(record, ["department", "dept"]) || "N/A",
-    level: getNestedString(record, ["level", "studentLevel", "yearLevel"]) || "N/A",
+    department:
+      getNestedString(record, ["department", "dept"]) ||
+      getNestedString(addedBy, ["department"]) ||
+      studentDetails.department ||
+      "N/A",
+    level:
+      getNestedString(record, ["level", "studentLevel", "yearLevel"]) ||
+      getNestedString(addedBy, ["level"]) ||
+      studentDetails.level ||
+      "N/A",
     price: toAmount(
       record.price ??
         record.amount ??
@@ -170,6 +191,21 @@ function normalizeAvailableManual(record: Record<string, unknown>): AvailableMan
 }
 
 export default function Dashboard() {
+  const [studentDetails] = useState<StudentDetails>(() => {
+    try {
+      const storedStudent = sessionStorage.getItem("Student");
+      const parsedStudent = storedStudent
+        ? (JSON.parse(storedStudent) as Record<string, unknown>)
+        : {};
+
+      return {
+        department: getNestedString(parsedStudent, ["department", "dept"]),
+        level: getNestedString(parsedStudent, ["level", "studentLevel", "yearLevel"]),
+      };
+    } catch {
+      return { department: "", level: "" };
+    }
+  });
   const [studentName, setStudentName] = useState("Student");
   const [recentPayments, setRecentPayments] = useState<RecentPayment[]>([]);
   const [availableManuals, setAvailableManuals] = useState<AvailableManual[]>([]);
@@ -221,7 +257,11 @@ export default function Dashboard() {
           getStudentRecords("/api/student/availableManuals", token),
         ]);
         setRecentPayments(paymentRecords.map(normalizeRecentPayment).filter((payment) => payment.id));
-        setAvailableManuals(availableManualRecords.map(normalizeAvailableManual));
+        setAvailableManuals(
+          availableManualRecords.map((record) =>
+            normalizeAvailableManual(record, studentDetails),
+          ),
+        );
       } catch (error) {
         console.error("Error fetching dashboard data:", error);
       } finally {
@@ -230,7 +270,7 @@ export default function Dashboard() {
     };
 
     fetchDashboardData();
-  }, [router]);
+  }, [router, studentDetails]);
 
   if (isLoading) {
     return <DashboardSkeleton />;
@@ -357,36 +397,70 @@ export default function Dashboard() {
             </div>
 
             <div className="mt-4 overflow-hidden">
-              <div className="divide-y divide-slate-200">
-                {recentPayments.slice(0, 3).map((row) => (
-                  <div
-                    key={row.id}
-                    className="flex min-w-0 flex-col gap-3 px-3 py-4 sm:flex-row sm:items-center sm:justify-between"
-                  >
-                    <div className="min-w-0 sm:flex-1">
-                      <div className="font-semibold">{row.code}</div>
-                      <div className="truncate text-sm text-slate-500">
-                        {row.title}
-                      </div>
-                    </div>
-
-                    <div className="text-sm font-semibold sm:shrink-0">₦{row.amount.toLocaleString()}</div>
-
-                    <div className="text-sm text-emerald-700 sm:shrink-0">● {row.status}</div>
-
-                    <div className="flex w-full items-center gap-3 sm:w-auto sm:shrink-0">
-                      <div className="min-w-0 flex-1 rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-1 font-mono text-sm font-semibold text-emerald-700 sm:flex-none">
-                        <span className="block truncate">
-                        {row.keycode || "Pending"}
-                        </span>
-                      </div>
-                      <Link href="/available-manuals" className="shrink-0 rounded-md bg-rose-600 px-3 py-2 text-sm font-semibold text-white hover:bg-rose-700">
-                        Show Keycode
-                      </Link>
-                    </div>
+              {recentPayments.length === 0 ? (
+                <div className="flex flex-col items-center gap-3 py-10 text-center">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-rose-50 text-rose-600">
+                    <svg
+                      aria-hidden="true"
+                      className="h-6 w-6"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.8"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M3 7.5A2.5 2.5 0 0 1 5.5 5h13A2.5 2.5 0 0 1 21 7.5v9a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 16.5v-9Z"
+                      />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M3 9h15.5A2.5 2.5 0 0 1 21 11.5v1H16a2 2 0 0 0 0 4h5"
+                      />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M16 14.5h.01"
+                      />
+                    </svg>
                   </div>
-                ))}
-              </div>
+                  <p className="text-sm text-slate-500">
+                    No transaction, your recent three transaction will show here
+                  </p>
+                </div>
+              ) : (
+                <div className="divide-y divide-slate-200">
+                  {recentPayments.slice(0, 3).map((row) => (
+                    <div
+                      key={row.id}
+                      className="flex min-w-0 flex-col gap-3 px-3 py-4 sm:flex-row sm:items-center sm:justify-between"
+                    >
+                      <div className="min-w-0 sm:flex-1">
+                        <div className="font-semibold">{row.code}</div>
+                        <div className="truncate text-sm text-slate-500">
+                          {row.title}
+                        </div>
+                      </div>
+
+                      <div className="text-sm font-semibold sm:shrink-0">₦{row.amount.toLocaleString()}</div>
+
+                      <div className="text-sm text-emerald-700 sm:shrink-0">● {row.status}</div>
+
+                      <div className="flex w-full items-center gap-3 sm:w-auto sm:shrink-0">
+                        <div className="min-w-0 flex-1 rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-1 font-mono text-sm font-semibold text-emerald-700 sm:flex-none">
+                          <span className="block truncate">
+                            {row.keycode || "Pending"}
+                          </span>
+                        </div>
+                        <Link href="/available-manuals" className="shrink-0 rounded-md bg-rose-600 px-3 py-2 text-sm font-semibold text-white hover:bg-rose-700">
+                          Show Keycode
+                        </Link>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -415,6 +489,7 @@ export default function Dashboard() {
                   <div className="font-semibold">₦{manual.price.toLocaleString()}</div>
                 </li>
               ))}
+              
               {availableManuals.length === 0 && (
                 <li className="text-sm text-slate-500">No manuals available.</li>
               )}

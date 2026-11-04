@@ -2,7 +2,6 @@
 
 import React, { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { getStudentTransactions } from "../../lib/studentApi";
 import TransactionList from "./components/TransactionList";
 import TransactionStats from "./components/TransactionStats";
@@ -79,7 +78,6 @@ function TransactionHistorySkeleton() {
 }
 
 export default function Page() {
-  const router = useRouter();
   const [activeTab, setActiveTab] = useState<FilterTab>("All");
   const [openId, setOpenId] = useState<string | null>(null);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -121,6 +119,33 @@ export default function Page() {
     (transaction) =>
       transaction.keyCode && transaction.pickupStatus !== "Collected",
   ).length;
+  const firstActiveTransaction = transactions.find(
+    (transaction) =>
+      Boolean(transaction.keyCode) && transaction.pickupStatus !== "Collected",
+  );
+
+  const openKeycodeModal = () => {
+    if (!firstActiveTransaction) return;
+
+    setSelectedManual({
+      id: firstActiveTransaction.id,
+      code: firstActiveTransaction.courseCode,
+      title: firstActiveTransaction.courseTitle,
+      department: "",
+      level: "",
+      price: `₦${firstActiveTransaction.amount.toLocaleString()}`,
+      paymentStatus: "Paid",
+      pickupStatus:
+        firstActiveTransaction.pickupStatus === "Collected"
+          ? "Collected"
+          : "Ready for Pickup",
+      keycode: firstActiveTransaction.keyCode,
+      createdAt: `${firstActiveTransaction.date} ${firstActiveTransaction.time}`,
+      studentName: "Student",
+      studentId: "",
+      paystackRef: firstActiveTransaction.paystackRef,
+    });
+  };
 
   if (isLoading) {
     return <TransactionHistorySkeleton />;
@@ -161,15 +186,18 @@ export default function Page() {
           </div>
         </div>
 
-        {/* onClick={() => router.push("/available-manuals")} */}
         <button
           type="button"
+          onClick={openKeycodeModal}
+          disabled={!firstActiveTransaction}
           className="w-full rounded-md bg-rose-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-rose-700 sm:w-auto"
         >
-        <KeycodeModal manual={selectedManual} onClose={() => setSelectedManual(null)}/>
           View Keycode
         </button>
-
+        <KeycodeModal
+          manual={selectedManual}
+          onClose={() => setSelectedManual(null)}
+        />
       </div>
 
       <div className="w-full rounded-2xl border border-slate-200 bg-white p-2 font-sans text-slate-800 shadow-sm md:p-6">
