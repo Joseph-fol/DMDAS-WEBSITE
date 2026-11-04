@@ -2,7 +2,7 @@
 'use client';
 
 import axios from 'axios';
-import { Check, Copy, CreditCard, KeyRound, MessageCircle } from 'lucide-react';
+import { Check, CreditCard, KeyRound } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Suspense, useEffect, useRef, useState } from 'react';
 import {
@@ -145,11 +145,6 @@ function VerifyCheckoutContent() {
     }
   };
 
-  const handleContactRep = () => {
-    if (!details?.manual) return;
-    alert(`Contacting Course Rep for ${details.manual}...`);
-  };
-
   const handleBuyAnother = () => {
     router.push('/purchase-manual');
   };
@@ -256,20 +251,13 @@ function VerifyCheckoutContent() {
             </button>
           </div>
 
-          <div className="mt-5 grid grid-cols-2 gap-3">
+          <div className="mt-5">
             <button
               type="button"
               onClick={handleBuyAnother}
-              className="rounded-lg bg-[#ed174b] px-4 py-3 text-[13px] font-bold text-white shadow-[0_4px_10px_rgba(237,23,75,0.25)] transition hover:bg-[#d91445]"
+              className="w-full rounded-lg bg-[#ed174b] px-4 py-3 text-[13px] font-bold text-white shadow-[0_4px_10px_rgba(237,23,75,0.25)] transition hover:bg-[#d91445]"
             >
               Buy Another
-            </button>
-            <button
-              type="button"
-              onClick={handleContactRep}
-              className="rounded-lg bg-[#ed174b] px-4 py-3 text-[13px] font-bold text-white shadow-[0_4px_10px_rgba(237,23,75,0.25)]"
-            >
-              Contact representative
             </button>
           </div>
         </div>

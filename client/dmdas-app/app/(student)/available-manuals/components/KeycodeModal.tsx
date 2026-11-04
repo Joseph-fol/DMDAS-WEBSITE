@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Check, X, Copy, MessageCircle } from 'lucide-react';
+import { Check, X, Copy } from 'lucide-react';
 import { Manual } from '../data/manual';
 
 interface KeycodeModalProps {
@@ -18,10 +18,6 @@ export const KeycodeModal: React.FC<KeycodeModalProps> = ({ manual, onClose }) =
     navigator.clipboard.writeText(manual.keycode);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
-  };
-
-  const handleContactRep = () => {
-    alert(`Contacting Course Rep for ${manual.code} (${manual.title})...`);
   };
 
   return (
@@ -112,10 +108,10 @@ export const KeycodeModal: React.FC<KeycodeModalProps> = ({ manual, onClose }) =
           </div>
 
           {/* Action Buttons */}
-          <div className="flex items-center gap-3 mt-6">
+          <div className="mt-6">
             <button
               onClick={handleCopy}
-              className="flex-1 py-2.5 px-4 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold transition-all flex items-center justify-center gap-1.5 shadow-xs active:scale-[0.98]"
+              className="w-full py-2.5 px-4 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold transition-all flex items-center justify-center gap-1.5 shadow-xs active:scale-[0.98]"
             >
               {copied ? (
                 <>
@@ -128,14 +124,6 @@ export const KeycodeModal: React.FC<KeycodeModalProps> = ({ manual, onClose }) =
                   <span>Copy Keycode</span>
                 </>
               )}
-            </button>
-
-            <button
-              onClick={handleContactRep}
-              className="flex-1 py-2.5 px-4 rounded-xl bg-[#E51749] hover:bg-[#D0103F] text-white text-xs font-semibold transition-all shadow-xs active:scale-[0.98] flex items-center justify-center gap-1.5"
-            >
-              <MessageCircle className="w-3.5 h-3.5 hidden" />
-              <span>Contact Course Rep</span>
             </button>
           </div>
         </div>

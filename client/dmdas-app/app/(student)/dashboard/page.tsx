@@ -483,7 +483,7 @@ export default function Dashboard() {
                   <div>
                     <div className="font-semibold">{manual.code}</div>
                     <div className="text-xs text-slate-500">
-                      {manual.level} · {manual.department}
+                      {manual.level}level · {manual.department}
                     </div>
                   </div>
                   <div className="font-semibold">₦{manual.price.toLocaleString()}</div>
