@@ -113,19 +113,25 @@ export default function DashboardNavbar({ isSidebarOpen, setIsSidebarOpen }: Das
             </button>
 
             {isNotificationsOpen && (
-              <div className="absolute right-0 top-11 z-30 w-80 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xl">
+              <div className="absolute right-0 top-11 z-30 w-[calc(100vw-2rem)] max-w-xs overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xl">
                 <div className="flex items-center justify-between border-b border-slate-100 px-4 py-3">
                   <h3 className="text-sm font-semibold text-slate-900">Notifications</h3>
                   <span className="text-xs text-slate-400">{unreadCount} unread</span>
                 </div>
                 <div className="max-h-72 overflow-y-auto">
-                  {notifications.slice(0, 3).map((notification) => (
-                    <div key={notification.id} className="border-b border-slate-100 px-4 py-3">
-                      <p className="text-sm font-semibold text-slate-800">{notification.title}</p>
-                      <p className="mt-1 text-xs text-slate-500">{notification.message}</p>
-                      <p className="mt-1 text-[11px] text-slate-400">{notification.createdAt}</p>
-                    </div>
-                  ))}
+                  {notifications.length === 0 ? (
+                    <p className="px-4 py-8 text-center text-sm text-slate-500">
+                      No notifications
+                    </p>
+                  ) : (
+                    notifications.slice(0, 3).map((notification) => (
+                      <div key={notification.id} className="border-b border-slate-100 px-4 py-3">
+                        <p className="break-words text-sm font-semibold text-slate-800">{notification.title}</p>
+                        <p className="mt-1 break-words text-xs text-slate-500">{notification.message}</p>
+                        <p className="mt-1 text-[11px] text-slate-400">{notification.createdAt}</p>
+                      </div>
+                    ))
+                  )}
                 </div>
                 <Link
                   href="/my-profile-settings?tab=notifications"
