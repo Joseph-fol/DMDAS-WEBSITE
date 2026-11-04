@@ -195,13 +195,15 @@ const searchManual = async (req, res) => {
     };
 
     let manuals = await AddManual.find(buildQuery(true))
-      .select("courseCode courseTitle semester price isAvailable printedStock claimedCount availableStock stockStatus")
+      .select("courseCode courseTitle semester price isAvailable printedStock claimedCount availableStock stockStatus addedBy")
+      .populate("addedBy", "fullName phoneNumber level department")
       .sort({ courseCode: 1 })
       .lean();
 
     if (manuals.length === 0) {
       manuals = await AddManual.find(buildQuery(false))
         .select("courseCode courseTitle semester price isAvailable printedStock claimedCount availableStock stockStatus addedBy")
+        .populate("addedBy", "fullName phoneNumber level department")
         .sort({ courseCode: 1 })
         .lean();
     }

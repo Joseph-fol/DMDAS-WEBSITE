@@ -47,6 +47,7 @@ type Manual = {
   // Representative details (flat or object)
   rep?: CourseRep | string;
   courseRep?: CourseRep | string;
+  addedBy?: CourseRep | string;
   repFullName?: string;
   repName?: string;
   representativeName?: string;
@@ -102,6 +103,10 @@ const asText = (value: unknown, fallback: string): string =>
 
 const getRepFullName = (m: Manual | null): string => {
   if (!m) return "Course Representative";
+  if (typeof m.addedBy === "object" && m.addedBy?.fullName)
+    return m.addedBy.fullName;
+  if (typeof m.addedBy === "object" && m.addedBy?.name)
+    return m.addedBy.name;
   if (typeof m.rep === "object" && m.rep?.fullName) return m.rep.fullName;
   if (typeof m.rep === "object" && m.rep?.name) return m.rep.name;
   if (typeof m.courseRep === "object" && m.courseRep?.fullName)
@@ -111,13 +116,19 @@ const getRepFullName = (m: Manual | null): string => {
   if (typeof m.rep === "string") return m.rep;
   if (typeof m.courseRep === "string") return m.courseRep;
   return asText(
-    m.repFullName || m.repName || m.representativeName || m.uploadedBy,
+    m.repFullName ||
+      m.repName ||
+      m.representativeName ||
+      m.uploadedBy ||
+      (typeof m.addedBy === "string" ? m.addedBy : undefined),
     "Course Representative",
   );
 };
 
 const getRepDepartment = (m: Manual | null): string => {
   if (!m) return "N/A";
+  if (typeof m.addedBy === "object" && m.addedBy?.department)
+    return m.addedBy.department;
   if (typeof m.rep === "object" && m.rep?.department) return m.rep.department;
   if (typeof m.courseRep === "object" && m.courseRep?.department)
     return m.courseRep.department;
@@ -129,6 +140,8 @@ const getRepDepartment = (m: Manual | null): string => {
 
 const getRepLevel = (m: Manual | null): string => {
   if (!m) return "N/A";
+  if (typeof m.addedBy === "object" && m.addedBy?.level)
+    return m.addedBy.level;
   if (typeof m.rep === "object" && m.rep?.level) return m.rep.level;
   if (typeof m.courseRep === "object" && m.courseRep?.level)
     return m.courseRep.level;
