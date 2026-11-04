@@ -1,7 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
+import { apiUrl } from "../../lib/apiUrl";
+import { studentRequestConfig } from "../../lib/studentApi";
 
 type StudentProfile = {
   fullName: string;
@@ -36,6 +38,7 @@ export default function Page() {
         typeof window !== "undefined"
           ? sessionStorage.getItem("Student")
           : null;
+          
       if (userDetails) {
         const parsedData = JSON.parse(userDetails);
         return {
@@ -78,10 +81,9 @@ export default function Page() {
       .join("")
       .toUpperCase() || "ST";
 
-  // Stats placeholders - these can be replaced with real values from API
-  const manualsPurchased = profile.purchasedManuals ?? "N/A";
-  const totalSpent = profile.totalSpent ?? "N/A";
-  const keycodesIssued = profile.keycodesIssued ?? "N/A";
+  const manualsPurchased = profile.purchasedManuals ?? 0;
+  const totalSpent = profile.totalSpent ?? "₦0";
+  const keycodesIssued = profile.keycodesIssued ?? 0;
 
   const [activeTab, setActiveTab] = useState<
     "personal" | "security" | "notifications" | "activity"
@@ -98,6 +100,30 @@ export default function Page() {
   const [isSubmittingProfile, setIsSubmittingProfile] = useState(false);
   const [profileMessage, setProfileMessage] = useState<string | null>(null);
   const [profileError, setProfileError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const loadProfile = async () => {
+      const token = sessionStorage.getItem("token");
+
+      try {
+        const response = await axios.get<StudentProfile>(
+          apiUrl("/api/profile"),
+          studentRequestConfig(token),
+        );
+
+        setProfile(response.data);
+        sessionStorage.setItem("Student", JSON.stringify(response.data));
+      } catch (error) {
+        setProfileError(
+          axios.isAxiosError(error)
+            ? error.response?.data?.message || error.message
+            : "Unable to load profile statistics.",
+        );
+      }
+    };
+
+    void loadProfile();
+  }, []);
 
   // Security tab state
   const [currentPin, setCurrentPin] = useState("");

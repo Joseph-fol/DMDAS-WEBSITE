@@ -1,4 +1,5 @@
 const User = require("../models/user.model");
+const Transaction = require("../models/transaction.model");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { sendPinResetEmail } = require("../services/resetPin.service");
@@ -259,7 +260,24 @@ const resetPasswordSetting = async (req, res) => {
 
 const getUserProfile = async (req, res) => {
   try {
-    res.status(200).json(req.user);
+    const paidTransactions = await Transaction.find({
+      student: req.user._id,
+      status: "PAID",
+    })
+      .select("amount")
+      .lean();
+
+    const totalSpent = paidTransactions.reduce(
+      (total, transaction) => total + Number(transaction.amount || 0),
+      0,
+    );
+
+    res.status(200).json({
+      ...req.user.toObject(),
+      purchasedManuals: paidTransactions.length,
+      totalSpent: `₦${totalSpent.toLocaleString("en-NG")}`,
+      keycodesIssued: paidTransactions.length,
+    });
   } catch (error) {
     console.error("Error fetching user profile:", error);
     res.status(500).json({ message: "Internal Server Error" });
