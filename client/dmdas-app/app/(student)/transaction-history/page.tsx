@@ -10,9 +10,73 @@ import { normalizeTransaction } from "./transactionUtils";
 import { FilterTab, Transaction } from "./types";
 import { KeycodeModal } from "../available-manuals/components/KeycodeModal";
 import { Manual } from "../available-manuals/data/manual";
-import DashboardSkeleton from "@/components/dashboard/DashboardSkeleton";
 
 const tabs: FilterTab[] = ["All", "Paid", "Failed", "Refunded"];
+
+function TransactionHistorySkeleton() {
+  return (
+    <section
+      className="mx-auto w-full max-w-7xl animate-pulse"
+      aria-busy="true"
+      aria-live="polite"
+    >
+      <div className="flex items-start justify-between gap-4 py-3">
+        <div className="space-y-3">
+          <div className="h-9 w-64 rounded-xl bg-slate-200" />
+          <div className="h-4 w-80 rounded bg-slate-200" />
+        </div>
+        <div className="h-10 w-20 rounded-md bg-slate-200" />
+      </div>
+
+      <div className="grid grid-cols-1 gap-4 py-4 sm:grid-cols-2 lg:grid-cols-4">
+        {Array.from({ length: 4 }).map((_, index) => (
+          <div
+            key={index}
+            className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"
+          >
+            <div className="h-3 w-24 rounded bg-slate-200" />
+            <div className="mt-4 h-8 w-20 rounded bg-slate-200" />
+            <div className="mt-4 h-3 w-32 rounded bg-slate-200" />
+          </div>
+        ))}
+      </div>
+
+      <div className="mb-4 flex items-center justify-between rounded-2xl border border-slate-200 bg-slate-100 p-4">
+        <div className="flex items-center gap-4">
+          <div className="h-10 w-10 rounded-lg bg-slate-200" />
+          <div className="space-y-2">
+            <div className="h-4 w-48 rounded bg-slate-200" />
+            <div className="h-3 w-72 rounded bg-slate-200" />
+          </div>
+        </div>
+        <div className="h-10 w-28 rounded-md bg-slate-200" />
+      </div>
+
+      <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+          <div className="h-6 w-32 rounded bg-slate-200" />
+          <div className="h-10 w-72 rounded-xl bg-slate-200" />
+        </div>
+        <div className="mt-5 space-y-4">
+          {Array.from({ length: 5 }).map((_, index) => (
+            <div
+              key={index}
+              className="flex items-center gap-4 rounded-xl border border-slate-100 p-4"
+            >
+              <div className="h-10 w-10 rounded-lg bg-slate-200" />
+              <div className="flex-1 space-y-2">
+                <div className="h-4 w-40 rounded bg-slate-200" />
+                <div className="h-3 w-56 rounded bg-slate-200" />
+              </div>
+              <div className="h-6 w-20 rounded bg-slate-200" />
+              <div className="h-6 w-16 rounded bg-slate-200" />
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
 
 export default function Page() {
   const router = useRouter();
@@ -46,10 +110,6 @@ export default function Page() {
     loadTransactions();
   }, []);
 
-  // if (isLoading) {
-  //     return <DashboardSkeleton />;
-  //   }
-
   const filteredTransactions = useMemo(
     () => activeTab === "All"
       ? transactions
@@ -61,6 +121,10 @@ export default function Page() {
     (transaction) =>
       transaction.keyCode && transaction.pickupStatus !== "Collected",
   ).length;
+
+  if (isLoading) {
+    return <TransactionHistorySkeleton />;
+  }
 
   return (
     <section className="mx-auto max-w-7xl">
@@ -132,9 +196,7 @@ export default function Page() {
           </div>
         </div>
     {/* className="py-16 text-center text-sm text-slate-500" */}
-        {isLoading ? (
-          <p ><DashboardSkeleton /></p>
-        ) : loadError ? (
+        {loadError ? (
           <p className="py-16 text-center text-sm text-rose-600">{loadError}</p>
         ) : (
           <TransactionList

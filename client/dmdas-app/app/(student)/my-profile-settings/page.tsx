@@ -31,6 +31,56 @@ const departmentsList = [
 
 const levelsList = ["100", "200", "300", "400", "500"];
 
+function ProfileSettingsSkeleton() {
+  return (
+    <section
+      className="mx-auto w-full max-w-7xl animate-pulse space-y-6"
+      aria-busy="true"
+      aria-live="polite"
+    >
+      <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-md">
+        <div className="h-52 bg-slate-200 px-6 pt-6">
+          <div className="flex items-center gap-4">
+            <div className="h-20 w-20 rounded-full bg-slate-300" />
+            <div className="space-y-3">
+              <div className="h-7 w-48 rounded bg-slate-300" />
+              <div className="h-4 w-64 rounded bg-slate-300" />
+            </div>
+          </div>
+        </div>
+        <div className="grid grid-cols-1 gap-4 px-4 py-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="h-11 rounded-lg bg-slate-200" />
+          {Array.from({ length: 3 }).map((_, index) => (
+            <div key={index} className="space-y-3 rounded-lg border border-slate-100 p-4">
+              <div className="mx-auto h-8 w-20 rounded bg-slate-200" />
+              <div className="mx-auto h-4 w-28 rounded bg-slate-200" />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[240px_1fr]">
+        <aside className="space-y-4 rounded-2xl border border-slate-200 bg-white p-4">
+          {Array.from({ length: 4 }).map((_, index) => (
+            <div key={index} className="h-10 rounded-lg bg-slate-200" />
+          ))}
+        </aside>
+        <div className="rounded-2xl border border-slate-200 bg-white p-6">
+          <div className="h-7 w-48 rounded bg-slate-200" />
+          <div className="mt-6 grid gap-5 sm:grid-cols-2">
+            {Array.from({ length: 6 }).map((_, index) => (
+              <div key={index} className="space-y-2">
+                <div className="h-4 w-28 rounded bg-slate-200" />
+                <div className="h-11 rounded-lg bg-slate-200" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export default function Page() {
   const [profile, setProfile] = useState<StudentProfile>(() => {
     try {
@@ -100,6 +150,7 @@ export default function Page() {
   const [isSubmittingProfile, setIsSubmittingProfile] = useState(false);
   const [profileMessage, setProfileMessage] = useState<string | null>(null);
   const [profileError, setProfileError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const loadProfile = async () => {
@@ -119,6 +170,8 @@ export default function Page() {
             ? error.response?.data?.message || error.message
             : "Unable to load profile statistics.",
         );
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -310,6 +363,10 @@ export default function Page() {
     sessionStorage.removeItem("Student");
     window.location.href = "/signin";
   };
+
+  if (isLoading) {
+    return <ProfileSettingsSkeleton />;
+  }
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
