@@ -70,18 +70,18 @@ export default function KeycodeModal() {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto p-3 sm:p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
       <div
-        className="relative w-full max-w-lg bg-white rounded-3xl shadow-2xl border border-gray-100 overflow-hidden"
+        className="relative my-auto w-full max-w-md max-h-[calc(100dvh-1.5rem)] sm:max-h-[calc(100dvh-2rem)] bg-white rounded-2xl sm:rounded-3xl shadow-2xl border border-gray-100 overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Modal Header */}
-        <div className="page-gradient-header bg-linear-to-r from-[#FFF0F3] to-white p-6 pb-5 border-b border-pink-100 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-[#FFE4E9] flex items-center justify-center text-[#E1193E]">
+        <div className="page-gradient-header bg-linear-to-r from-[#FFF0F3] to-white p-4 sm:p-5 border-b border-pink-100 flex items-center justify-between gap-3">
+          <div className="flex min-w-0 items-center gap-3">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 shrink-0 rounded-full bg-[#FFE4E9] flex items-center justify-center text-[#E1193E]">
               <KeyRound className="w-5 h-5" />
             </div>
-            <div>
+            <div className="min-w-0">
               <h3 className="font-bold text-lg text-gray-900 leading-tight">Redeem Course Manual</h3>
               <p className="text-xs text-gray-500">Enter your institution keycode to unlock access</p>
             </div>
@@ -95,7 +95,7 @@ export default function KeycodeModal() {
         </div>
 
         {/* Modal Body */}
-        <div className="p-6 sm:p-8">
+        <div className="p-4 sm:p-6">
           {!isSuccess ? (
             <form onSubmit={handleRedeem} className="space-y-4">
               <div>
