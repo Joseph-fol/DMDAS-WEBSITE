@@ -82,8 +82,9 @@ export interface BankAccount {
 export interface DashboardStats {
   grossSales: number;
   systemDeduction: number;
-  systemDeductionRate: number; // e.g. 5
+  systemDeductionRate: number; // e.g. 1.37
   availableBalance: number;
+  settlementAccount: BankAccount;
   confirmedToday: number;
   keycodesIssued: number;
   awaitingPickup: number;

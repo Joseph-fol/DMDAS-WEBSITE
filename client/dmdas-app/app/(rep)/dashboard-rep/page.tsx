@@ -393,8 +393,11 @@ export default function DashboardPage() {
                   Destination Bank
                 </label>
                 <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs text-slate-700">
-                  <p className="font-bold">EMEKA ANUNOBI</p>
-                  <p className="text-slate-500 mt-0.5">GTBank · 0123456789 (Verified)</p>
+                  <p className="font-bold">{data.settlementAccount.accountName}</p>
+                  <p className="text-slate-500 mt-0.5">
+                    {data.settlementAccount.bankName} · {data.settlementAccount.accountNumber}
+                    {data.settlementAccount.isVerified ? ' (Verified)' : ''}
+                  </p>
                 </div>
               </div>
 

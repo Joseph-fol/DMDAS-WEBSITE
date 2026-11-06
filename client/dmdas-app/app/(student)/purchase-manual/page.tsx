@@ -511,8 +511,7 @@ export default function PurchaseManual() {
       const response = await axios.post(
         studentApiUrl("/student/initializeTransaction"),
         {
-          amount: toAmount(paymentManual.price),
-          manualId: getManualId(paymentManual),
+        manualId: getManualId(paymentManual),
           callback_url: `${window.location.origin}/purchase-manual/checkout-success`,
         },
         studentRequestConfig(token),

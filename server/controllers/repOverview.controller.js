@@ -11,7 +11,7 @@ const {
 } = require('../util/redis')
 
 const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
-const FEE_RATE = 5
+const FEE_RATE = 1.37
 const REP_CACHE_TTL_SECONDS = 30
 
 const cachedRepResponse = async (repId, name, load) => {
@@ -48,6 +48,44 @@ const repTransactions = async repId => {
   })
 }
 
+const getWithdrawals = async repId => {
+  return Withdrawal.find({ representative: repId })
+    .sort({ createdAt: -1 })
+    .lean()
+}
+
+const getFinancialSummary = (transactions, withdrawals) => {
+  const grossSales = transactions.reduce(
+    (total, transaction) => total + Number(transaction.amount || 0),
+    0
+  )
+  const systemDeduction = grossSales * (FEE_RATE / 100)
+  const totalWithdrawn = withdrawals
+    .filter(withdrawal => withdrawal.status !== 'Failed')
+    .reduce((total, withdrawal) => total + Number(withdrawal.amount || 0), 0)
+
+  return {
+    grossSales,
+    systemDeduction,
+    systemDeductionRate: FEE_RATE,
+    totalWithdrawn,
+    availableBalance: Math.max(
+      0,
+      grossSales - systemDeduction - totalWithdrawn
+    )
+  }
+}
+
+const settlementAccount = user => {
+  const account = user.settlementAccount || {}
+  return {
+    accountName: account.accountName || 'Not configured',
+    bankName: account.bankName || 'Not configured',
+    accountNumber: account.accountNumber || '',
+    isVerified: Boolean(account.accountNumber)
+  }
+}
+
 const activityFromTransaction = transaction => ({
   id: String(transaction._id),
   type:
@@ -74,11 +112,8 @@ const dashboard = async (req, res) => {
       'dashboard',
       async () => {
       const { manuals, transactions } = await repTransactions(req.user._id)
-      const grossSales = transactions.reduce(
-        (total, transaction) => total + Number(transaction.amount || 0),
-        0
-      )
-      const systemDeduction = grossSales * (FEE_RATE / 100)
+      const withdrawals = await getWithdrawals(req.user._id)
+      const financials = getFinancialSummary(transactions, withdrawals)
       const today = new Date()
       const confirmedToday = transactions.filter(transaction => {
         const date = new Date(transaction.paymentDate || transaction.createdAt)
@@ -102,10 +137,8 @@ const dashboard = async (req, res) => {
       })
 
       return {
-        grossSales,
-        systemDeduction,
-        systemDeductionRate: FEE_RATE,
-        availableBalance: Math.max(0, grossSales - systemDeduction),
+        ...financials,
+        settlementAccount: settlementAccount(req.user),
         confirmedToday,
         keycodesIssued: transactions.length,
         awaitingPickup: unclaimed,
@@ -194,12 +227,8 @@ const settlement = async (req, res) => {
   try {
     const response = await cachedRepResponse(req.user._id, 'settlement', async () => {
       const { transactions } = await repTransactions(req.user._id)
-    const grossSales = transactions.reduce(
-      (total, transaction) => total + Number(transaction.amount || 0),
-      0
-    )
-    const systemDeduction = grossSales * (FEE_RATE / 100)
-    const account = req.user.settlementAccount || {}
+    const withdrawals = await getWithdrawals(req.user._id)
+    const financials = getFinancialSummary(transactions, withdrawals)
     const transactionRows = transactions.map(transaction => ({
       id: String(transaction._id),
       paystackRef: transaction.reference,
@@ -211,28 +240,10 @@ const settlement = async (req, res) => {
       date: transaction.paymentDate || transaction.createdAt,
       keycode: transaction.keycode
     }))
-    const withdrawals = await Withdrawal.find({ representative: req.user._id })
-      .sort({ createdAt: -1 })
-      .lean()
-    const totalWithdrawn = withdrawals
-      .filter(withdrawal => withdrawal.status !== 'Failed')
-      .reduce((total, withdrawal) => total + withdrawal.amount, 0)
       return {
-      grossSales,
-      systemDeduction,
-      systemDeductionRate: FEE_RATE,
-      availableBalance: Math.max(
-        0,
-        grossSales - systemDeduction - totalWithdrawn
-      ),
+      ...financials,
       totalTransactions: transactions.length,
-      totalWithdrawn,
-      settlementAccount: {
-        accountName: account.accountName || 'Not configured',
-        bankName: account.bankName || 'Not configured',
-        accountNumber: account.accountNumber || '',
-        isVerified: Boolean(account.accountNumber)
-      },
+      settlementAccount: settlementAccount(req.user),
       withdrawalHistory: withdrawals.map(withdrawal => ({
         id: String(withdrawal._id),
         reference: withdrawal.reference,
@@ -265,18 +276,8 @@ const withdraw = async (req, res) => {
 
   try {
     const { transactions } = await repTransactions(req.user._id)
-    const grossSales = transactions.reduce(
-      (total, transaction) => total + Number(transaction.amount || 0),
-      0
-    )
-
-    const totalWithdrawn = await Withdrawal.aggregate([
-      { $match: { representative: req.user._id, status: { $ne: 'Failed' } } },
-      { $group: { _id: null, total: { $sum: '$amount' } } }
-    ])
-
-    const availableBalance =
-      grossSales * (1 - FEE_RATE / 100) - (totalWithdrawn[0]?.total || 0)
+    const withdrawals = await getWithdrawals(req.user._id)
+    const { availableBalance } = getFinancialSummary(transactions, withdrawals)
 
     const account = req.user.settlementAccount || {}
     if (!account.accountNumber || !account.bankName || !account.accountName) {
@@ -329,7 +330,7 @@ const reports = async (req, res) => {
     grossSales: response.grossSales,
     deductions: response.systemDeduction,
     deductionRate: response.systemDeductionRate,
-    withdrawn: 0,
+    withdrawn: response.totalWithdrawn,
     available: response.availableBalance,
     manualPerformance: response.distributionProgress.map(item => ({
       courseCode: item.courseCode,
@@ -341,16 +342,10 @@ const reports = async (req, res) => {
 
 const dashboardData = async req => {
   const { manuals, transactions } = await repTransactions(req.user._id)
-  const grossSales = transactions.reduce(
-    (total, transaction) => total + Number(transaction.amount || 0),
-    0
-  )
-  const systemDeduction = grossSales * (FEE_RATE / 100)
+  const withdrawals = await getWithdrawals(req.user._id)
+  const financials = getFinancialSummary(transactions, withdrawals)
   return {
-    grossSales,
-    systemDeduction,
-    systemDeductionRate: FEE_RATE,
-    availableBalance: Math.max(0, grossSales - systemDeduction),
+    ...financials,
     distributionProgress: manuals.map(manual => ({
       courseCode: manual.courseCode,
       courseTitle: manual.courseTitle,

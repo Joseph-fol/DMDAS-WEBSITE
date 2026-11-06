@@ -30,16 +30,11 @@ const generateKeycode = () => `DM-${crypto.randomInt(1000, 10000)}`;
 const initializeTransaction = async (req, res) => {
     const payStackBaseURL = "https://api.paystack.co";
     const { email, fullName, matricNumber } = req.user;
-    const { amount, manualId } = req.body;
-    const parsedAmount = Number(amount);
+    const { manualId } = req.body;
     const normalizedMatricNumber = String(matricNumber || "").trim().toUpperCase();
 
     if (!manualId) {
         return res.status(400).json({ message: "ManualId is required." });
-    }
-
-    if (!Number.isFinite(parsedAmount) || parsedAmount <= 0) {
-        return res.status(400).json({ message: "A valid positive amount is required." });
     }
 
     if (!mongoose.isValidObjectId(manualId)) {
@@ -52,6 +47,11 @@ const initializeTransaction = async (req, res) => {
         const manual = await Manual.findById(manualId);
         if (!manual) {
             return res.status(404).json({ message: "Manual not found." });
+        }
+
+        const parsedAmount = Number(manual.price);
+        if (!Number.isFinite(parsedAmount) || parsedAmount <= 0) {
+            return res.status(400).json({ message: "Manual has an invalid price." });
         }
 
         const normalizedCourseCode = String(manual.courseCode || "").toUpperCase().trim();
@@ -504,7 +504,6 @@ const getBankDetails = async (req, res) => {
     try {
         const banksData = await fetchPaystackBanks();
         const bankCodes = banksData.map(bank => bank.code);
-
         res.json({ bankCodes });
     } catch (error) {
         res.status(500).json({ message: "Failed to fetch banks" });

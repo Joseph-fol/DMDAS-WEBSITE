@@ -350,17 +350,18 @@ export const fallbackPaymentTransactions: PaymentTransaction[] = [
 ];
 
 export const fallbackBankAccount: BankAccount = {
-  accountName: 'EMEKA ANUNOBI',
-  bankName: 'GTBank',
-  accountNumber: '0123456789',
+  accountName: ' -',
+  bankName: ' - ',
+  accountNumber: '00000000000',
   isVerified: true,
 };
 
 export const fallbackDashboardStats: DashboardStats = {
   grossSales: 14600,
-  systemDeduction: 730,
-  systemDeductionRate: 5,
-  availableBalance: 4670,
+  systemDeduction: 200.02,
+  systemDeductionRate: 1.37,
+  availableBalance: 5199.98,
+  settlementAccount: fallbackBankAccount,
   confirmedToday: 1,
   keycodesIssued: 4,
   awaitingPickup: 2,
@@ -394,9 +395,9 @@ export const fallbackDashboardStats: DashboardStats = {
 
 export const fallbackSettlementSummary: SettlementSummary = {
   grossSales: 14600,
-  systemDeduction: 730,
-  systemDeductionRate: 5,
-  availableBalance: 4670,
+  systemDeduction: 200.02,
+  systemDeductionRate: 1.37,
+  availableBalance: 5199.98,
   totalTransactions: fallbackPaymentTransactions.length,
   totalWithdrawn: 9200,
   settlementAccount: fallbackBankAccount,
@@ -406,8 +407,8 @@ export const fallbackSettlementSummary: SettlementSummary = {
 
 export const fallbackReportsData: ReportsData = {
   grossSales: 14600,
-  deductions: 730,
-  deductionRate: 5,
+  deductions: 200.02,
+  deductionRate: 1.37,
   withdrawn: 9200,
   available: 4670,
   manualPerformance: [
