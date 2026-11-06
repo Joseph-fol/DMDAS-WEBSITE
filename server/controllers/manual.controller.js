@@ -51,7 +51,7 @@ const addManual = async (req, res) => {
           students.map((student) => ({
             user: student._id,
             title: "New course manual available",
-            message: `${courseCode} - ${courseTitle} is now available for purchase.`,
+            message: `${req.user.fullName} added course manual and it is available`,
             type: "manual_available",
           })),
         );

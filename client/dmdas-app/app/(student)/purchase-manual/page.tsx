@@ -874,8 +874,6 @@ export default function PurchaseManual() {
                 <div className="mt-4 text-xs text-slate-400 flex items-center justify-center gap-4">
                   <div>🔒 SSL Encrypted</div>
                   <div>·</div>
-                  <div>PCI DSS Compliant</div>
-                  <div>·</div>
                   <div>Instant Keycode</div>
                 </div>
               </div>

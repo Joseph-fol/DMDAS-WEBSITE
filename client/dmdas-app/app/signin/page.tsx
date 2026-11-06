@@ -101,14 +101,7 @@ export default function Signin() {
       if (userData) {
         sessionStorage.setItem("Student", JSON.stringify(userData));
       }
-
-      const role = userData.role
-      if (role === "rep" || role === "superRep") {
-        setTimeout(() => router.push("/dashboard-rep"), 1000);
-      } else {
-        setTimeout(() => router.push("/dashboard"), 1000);
-      }
-
+      
     } catch (error) {
       if (axios.isAxiosError(error)) {
         const remainingHeader = error.response?.headers["ratelimit-remaining"];

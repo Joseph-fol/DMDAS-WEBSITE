@@ -98,8 +98,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
             </p>
           )}
           <p className="flex items-center justify-center gap-1 text-xs text-slate-400">
-            <LockKeyhole className="h-3 w-3" /> Secured by Paystack · PCI DSS
-            Compliant
+            <LockKeyhole className="h-3 w-3" /> Secured by Paystack 
           </p>
           <button
             type="button"
