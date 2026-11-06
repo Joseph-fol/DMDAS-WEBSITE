@@ -233,10 +233,14 @@ export async function requestWithdrawal(amount: number): Promise<WithdrawalRecor
   });
 }
 
-export async function resolveAccountDetails(accountNumber: string, bankName: string): Promise<BankAccount> {
+export async function resolveAccountDetails(
+  accountNumber: string,
+  bankName: string,
+  bankCode?: string,
+): Promise<BankAccount> {
   return apiRequest<BankAccount>('/api/rep/resolveAccount', {
     method: 'POST',
-    body: JSON.stringify({ accountNumber, bankName }),
+    body: JSON.stringify({ accountNumber, bankName, bankCode }),
   });
 }
 

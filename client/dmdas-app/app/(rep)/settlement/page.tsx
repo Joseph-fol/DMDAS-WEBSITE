@@ -65,6 +65,57 @@ export default function SettlementPage() {
       });
   }, [accountModalOpen, banks.length, showToast]);
 
+  useEffect(() => {
+    if (
+      !accountModalOpen ||
+      accountForm.accountNumber.length !== 10 ||
+      !accountForm.bankName
+    ) {
+      return;
+    }
+
+    let cancelled = false;
+    const resolve = async () => {
+      setResolvingAccount(true);
+      try {
+        const resolvedAccount = await resolveAccountDetails(
+          accountForm.accountNumber,
+          accountForm.bankName,
+          accountForm.bankCode,
+        );
+        if (!cancelled) {
+          setAccountForm((current) => ({
+            ...current,
+            ...resolvedAccount,
+            isVerified: true,
+          }));
+        }
+      } catch (err: any) {
+        if (!cancelled) {
+          setAccountForm((current) => ({
+            ...current,
+            accountName: '',
+            isVerified: false,
+          }));
+          showToast(err.message || 'Unable to verify this account', 'error');
+        }
+      } finally {
+        if (!cancelled) setResolvingAccount(false);
+      }
+    };
+
+    void resolve();
+    return () => {
+      cancelled = true;
+    };
+  }, [
+    accountModalOpen,
+    accountForm.accountNumber,
+    accountForm.bankName,
+    accountForm.bankCode,
+    showToast,
+  ]);
+
   const handleWithdraw = async (e: React.FormEvent) => {
     e.preventDefault();
     const amountNum = Number(withdrawAmount);
@@ -88,6 +139,11 @@ export default function SettlementPage() {
 
   const handleUpdateAccount = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!accountForm.isVerified || !accountForm.accountName) {
+      showToast('Verify the account number before saving.', 'error');
+      return;
+    }
+
     setUpdatingAccount(true);
     try {
       await updateSettlementAccount(accountForm);
@@ -98,25 +154,6 @@ export default function SettlementPage() {
       showToast(err.message || 'Failed to update account', 'error');
     } finally {
       setUpdatingAccount(false);
-    }
-  };
-
-  const handleResolveAccount = async () => {
-    if (accountForm.accountNumber.length !== 10 || !accountForm.bankName) return;
-
-    setResolvingAccount(true);
-    try {
-      const resolvedAccount = await resolveAccountDetails(
-        accountForm.accountNumber,
-        accountForm.bankName,
-      );
-      setAccountForm({ ...accountForm, ...resolvedAccount, isVerified: true });
-      showToast(`Account verified for ${resolvedAccount.accountName}`, 'success');
-    } catch (err: any) {
-      setAccountForm({ ...accountForm, accountName: '', isVerified: false });
-      showToast(err.message || 'Unable to verify this account', 'error');
-    } finally {
-      setResolvingAccount(false);
     }
   };
 
@@ -462,6 +499,7 @@ export default function SettlementPage() {
                   onChange={(e) => setAccountForm({
                     ...accountForm,
                     bankName: e.target.value,
+                    bankCode: banks.find((bank) => bank.name === e.target.value)?.code,
                     accountName: '',
                     isVerified: false,
                   })}
@@ -479,7 +517,7 @@ export default function SettlementPage() {
 
               <div>
                 <label className="block text-xs font-semibold text-slate-700 mb-1">
-                  Account Number (NUBAN)
+                  Account Number
                 </label>
                 <input
                   type="text"
@@ -491,7 +529,6 @@ export default function SettlementPage() {
                     accountName: '',
                     isVerified: false,
                   })}
-                  onBlur={handleResolveAccount}
                   placeholder="0123456789"
                   className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-slate-900 text-xs font-mono focus:outline-none focus:ring-2 focus:ring-red-100 focus:border-[#E1193E]"
                   required
@@ -507,7 +544,6 @@ export default function SettlementPage() {
                   value={accountForm.accountName}
                   readOnly
                   placeholder={resolvingAccount ? 'Verifying account...' : 'Account name appears after verification'}
-                  placeholder="EMEKA ANUNOBI"
                   className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-slate-900 text-xs uppercase focus:outline-none focus:ring-2 focus:ring-red-100 focus:border-[#E1193E]"
                   required
                 />
@@ -523,7 +559,7 @@ export default function SettlementPage() {
                 </button>
                 <button
                   type="submit"
-                  disabled={updatingAccount}
+                  disabled={updatingAccount || resolvingAccount || !accountForm.isVerified}
                   className="px-4 py-2 bg-[#E1193E] hover:bg-[#C20E30] text-white rounded-xl text-xs font-semibold flex items-center gap-1.5 disabled:opacity-50"
                 >
                   {updatingAccount && <Loader2 className="w-3.5 h-3.5 animate-spin" />}

@@ -82,6 +82,7 @@ const settlementAccount = user => {
     accountName: account.accountName || 'Not configured',
     bankName: account.bankName || 'Not configured',
     accountNumber: account.accountNumber || '',
+    bankCode: account.bankCode || undefined,
     isVerified: Boolean(account.accountNumber)
   }
 }
