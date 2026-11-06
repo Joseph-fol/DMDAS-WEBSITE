@@ -105,6 +105,7 @@ const activityFromTransaction = transaction => ({
   color: transaction.dispatchStatus === 'CLAIMED' ? 'purple' : 'green'
 })
 
+
 const dashboard = async (req, res) => {
   try {
     const response = await cachedRepResponse(
@@ -229,6 +230,7 @@ const settlement = async (req, res) => {
       const { transactions } = await repTransactions(req.user._id)
     const withdrawals = await getWithdrawals(req.user._id)
     const financials = getFinancialSummary(transactions, withdrawals)
+    
     const transactionRows = transactions.map(transaction => ({
       id: String(transaction._id),
       paystackRef: transaction.reference,
@@ -288,7 +290,7 @@ const withdraw = async (req, res) => {
             'Configure and verify a settlement account before withdrawing.'
         })
     }
-    
+
     if (amount > availableBalance) {
       return res
         .status(400)

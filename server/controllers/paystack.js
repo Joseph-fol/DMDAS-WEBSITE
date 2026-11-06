@@ -503,9 +503,10 @@ const fetchPaystackBanks = async () => {
 const getBankDetails = async (req, res) => {
     try {
         const banksData = await fetchPaystackBanks();
-        const bankCodes = banksData.map(bank => bank.code);
-        res.json({ bankCodes });
+        const banks = banksData.map(({ name, code }) => ({ name, code }));
+        res.json({ banks, bankCodes: banks.map((bank) => bank.code) });
     } catch (error) {
+        console.error("Error fetching bank details:", error);
         res.status(500).json({ message: "Failed to fetch banks" });
     }
 };

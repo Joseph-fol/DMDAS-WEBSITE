@@ -77,6 +77,7 @@ export interface BankAccount {
   bankName: string;
   accountNumber: string;
   isVerified: boolean;
+  bankCode?: string;
 }
 
 export interface DashboardStats {

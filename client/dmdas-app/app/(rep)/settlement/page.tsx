@@ -8,7 +8,13 @@ import {
   X,
 } from 'lucide-react';
 import { SettlementSummary, BankAccount } from '@/types/portal';
-import { getSettlementData, requestWithdrawal, updateSettlementAccount } from '@/lib/api';
+import {
+  getSettlementData,
+  getBanks,
+  requestWithdrawal,
+  resolveAccountDetails,
+  updateSettlementAccount,
+} from '@/lib/api';
 import { useToast } from '@/context/ToastContext';
 
 export default function SettlementPage() {
@@ -24,6 +30,8 @@ export default function SettlementPage() {
   // Update Account Modal
   const [accountModalOpen, setAccountModalOpen] = useState(false);
   const [updatingAccount, setUpdatingAccount] = useState(false);
+  const [resolvingAccount, setResolvingAccount] = useState(false);
+  const [banks, setBanks] = useState<Array<{ name: string; code: string }>>([]);
   const [accountForm, setAccountForm] = useState<BankAccount>({
     accountName: '',
     bankName: '',
@@ -46,6 +54,16 @@ export default function SettlementPage() {
   useEffect(() => {
     loadData();
   }, []);
+
+  useEffect(() => {
+    if (!accountModalOpen || banks.length > 0) return;
+
+    getBanks()
+      .then(setBanks)
+      .catch((err: any) => {
+        showToast(err.message || 'Unable to load banks', 'error');
+      });
+  }, [accountModalOpen, banks.length, showToast]);
 
   const handleWithdraw = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -80,6 +98,25 @@ export default function SettlementPage() {
       showToast(err.message || 'Failed to update account', 'error');
     } finally {
       setUpdatingAccount(false);
+    }
+  };
+
+  const handleResolveAccount = async () => {
+    if (accountForm.accountNumber.length !== 10 || !accountForm.bankName) return;
+
+    setResolvingAccount(true);
+    try {
+      const resolvedAccount = await resolveAccountDetails(
+        accountForm.accountNumber,
+        accountForm.bankName,
+      );
+      setAccountForm({ ...accountForm, ...resolvedAccount, isVerified: true });
+      showToast(`Account verified for ${resolvedAccount.accountName}`, 'success');
+    } catch (err: any) {
+      setAccountForm({ ...accountForm, accountName: '', isVerified: false });
+      showToast(err.message || 'Unable to verify this account', 'error');
+    } finally {
+      setResolvingAccount(false);
     }
   };
 
@@ -422,17 +459,21 @@ export default function SettlementPage() {
                 </label>
                 <select
                   value={accountForm.bankName}
-                  onChange={(e) => setAccountForm({ ...accountForm, bankName: e.target.value })}
+                  onChange={(e) => setAccountForm({
+                    ...accountForm,
+                    bankName: e.target.value,
+                    accountName: '',
+                    isVerified: false,
+                  })}
                   className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-slate-900 text-xs bg-white focus:outline-none focus:ring-2 focus:ring-red-100 focus:border-[#E1193E]"
                   required
                 >
-                  <option value="GTBank">Guaranty Trust Bank (GTBank)</option>
-                  <option value="Access Bank">Access Bank</option>
-                  <option value="Zenith Bank">Zenith Bank</option>
-                  <option value="First Bank of Nigeria">First Bank of Nigeria</option>
-                  <option value="UBA">United Bank for Africa (UBA)</option>
-                  <option value="Kuda Bank">Kuda Microfinance Bank</option>
-                  <option value="OPay">OPay Digital Services</option>
+                  <option value="">Select a bank</option>
+                  {banks.map((bank) => (
+                    <option key={bank.code} value={bank.name}>
+                      {bank.name}
+                    </option>
+                  ))}
                 </select>
               </div>
 
@@ -444,7 +485,13 @@ export default function SettlementPage() {
                   type="text"
                   maxLength={10}
                   value={accountForm.accountNumber}
-                  onChange={(e) => setAccountForm({ ...accountForm, accountNumber: e.target.value })}
+                  onChange={(e) => setAccountForm({
+                    ...accountForm,
+                    accountNumber: e.target.value.replace(/\D/g, '').slice(0, 10),
+                    accountName: '',
+                    isVerified: false,
+                  })}
+                  onBlur={handleResolveAccount}
                   placeholder="0123456789"
                   className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-slate-900 text-xs font-mono focus:outline-none focus:ring-2 focus:ring-red-100 focus:border-[#E1193E]"
                   required
@@ -458,7 +505,8 @@ export default function SettlementPage() {
                 <input
                   type="text"
                   value={accountForm.accountName}
-                  onChange={(e) => setAccountForm({ ...accountForm, accountName: e.target.value.toUpperCase() })}
+                  readOnly
+                  placeholder={resolvingAccount ? 'Verifying account...' : 'Account name appears after verification'}
                   placeholder="EMEKA ANUNOBI"
                   className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-slate-900 text-xs uppercase focus:outline-none focus:ring-2 focus:ring-red-100 focus:border-[#E1193E]"
                   required

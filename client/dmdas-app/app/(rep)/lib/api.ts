@@ -233,6 +233,21 @@ export async function requestWithdrawal(amount: number): Promise<WithdrawalRecor
   });
 }
 
+export async function resolveAccountDetails(accountNumber: string, bankName: string): Promise<BankAccount> {
+  return apiRequest<BankAccount>('/api/rep/resolveAccount', {
+    method: 'POST',
+    body: JSON.stringify({ accountNumber, bankName }),
+  });
+}
+
+export async function getBanks(): Promise<Array<{ name: string; code: string }>> {
+  const response = await apiRequest<{ banks?: Array<{ name: string; code: string }> }>(
+    '/api/banks',
+    { method: 'GET' },
+  );
+  return response.banks ?? [];
+}
+
 export async function updateSettlementAccount(account: BankAccount): Promise<BankAccount> {
   return apiRequest<BankAccount>('/api/settlement/account', {
     method: 'PUT',
