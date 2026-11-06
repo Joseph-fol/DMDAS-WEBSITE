@@ -6,12 +6,8 @@ import StatsCounter from "@/components/StatsCounter";
 import CtaBanner from "@/components/CtaBanner";
 import FaqAccordion from "@/components/FaqAccordion";
 import { HeroCampusVisual, HowItWorkImage, StudentWorkflowVisual } from "@/components/CampusVisuals";
-import { useModal } from "@/context/ModalContext";
-import Image from "next/image";
 
 export default function HomePage() {
-  const { openAuthModal } = useModal();
-
   const coreFeatures = [
     {
       title: "Digital Manual Distribution",
@@ -38,25 +34,26 @@ export default function HomePage() {
   return (
     <div className="flex flex-col min-h-screen">
       {/* 1. HERO SECTION */}
-      <section className="relative overflow-hidden pt-6 sm:pt-10 pb-16 lg:pb-24">
+      <section className="relative overflow-hidden bg-[#241017] py-10 sm:py-14 lg:py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
             {/* Left Content */}
-            <div className="lg:col-span-6 space-y-6 text-center lg:text-left" data-aos="fade-right">
+            <div className="lg:col-span-6 space-y-6 text-center lg:text-left text-white" data-aos="fade-right">
               {/* Category Pill Tag */}
-              <div data-aos="fade-right" data-aos-delay="100" className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-red-50 border border-pink-100 text-[#E1193E] text-xs font-bold tracking-wider uppercase">
-                <span>DIGITAL. ACCOUNTABLE. EFFICIENT.</span>
+              <div data-aos="fade-right" data-aos-delay="100" className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#55202f] border border-[#a32b4a] text-[#ff4968] text-xs font-bold tracking-wider uppercase">
+                <span>COURSE MANUALS, DIGITIZED</span>
               </div>
 
               {/* Main Headline */}
-              <h1 data-aos="fade-right" data-aos-delay="200" className="text-4xl sm:text-5xl lg:text-5xl font-black tracking-tight text-gray-900 leading-[1.15]">
-                Smarter Distribution. <br />
-                <span className="text-[#E1193E]">Stronger Accountability.</span>
+              <h1 data-aos="fade-right" data-aos-delay="200" className="text-5xl sm:text-6xl lg:text-7xl font-black tracking-tight leading-[1.05]">
+                Pay online.<br />
+                Collect with<br />
+                <span className="text-[#ff3f60]">proof.</span>
               </h1>
 
               {/* Subtitle */}
-              <p data-aos="fade-right" data-aos-delay="300" className="text-base sm:text-lg text-gray-600 max-w-xl mx-auto lg:mx-0 leading-relaxed">
-                DMDAS helps institutions distribute course manuals digitally, manage keycodes, and ensure transparency every step of the way.
+              <p data-aos="fade-right" data-aos-delay="300" className="text-base sm:text-lg text-[#dbcbd0] max-w-xl mx-auto lg:mx-0 leading-relaxed">
+                A secure platform for buying, tracking and distributing academic manuals, with no lost ledgers and no proxy claims.
               </p>
 
               {/* Action Buttons */}
@@ -68,37 +65,14 @@ export default function HomePage() {
                 </Link>
 
                 <Link
-                  href="/features"
-                  className="w-full sm:w-auto inline-flex items-center justify-center px-7 py-3.5 rounded-xl sm:rounded-full bg-white hover:bg-gray-50 text-gray-700 hover:text-[#E1193E] font-semibold text-sm sm:text-base border border-gray-300 hover:border-red-200 transition-all shadow-sm"
+                  href="/how-it-works"
+                  className="w-full sm:w-auto inline-flex items-center justify-center px-7 py-3.5 rounded-xl sm:rounded-full bg-transparent hover:bg-white/10 text-white font-semibold text-sm sm:text-base border border-[#bca9af] transition-all"
                 >
-                  Explore Features
+                  See how it works
                 </Link>
               </div>
 
               {/* Trust Badge with Avatars */}
-              <div className="pt-4 flex items-center justify-center lg:justify-start gap-3 text-left">
-                <div className="flex -space-x-2 overflow-hidden">
-                  <Image width={20} height={30}
-                    className="inline-block h-8 w-8 rounded-full ring-2 ring-white object-cover"
-                    src="/student-avatar1.jpg"
-                    alt="Student avatar 1"
-                  />
-                  <Image width={20} height={30}
-                    className="inline-block h-8 w-8 rounded-full ring-2 ring-white object-cover"
-                    src="/student-avatar2.jpg"
-                    alt="Student avatar 2"
-                  />
-                  <Image width={20} height={30}
-                    className="inline-block h-8 w-8 rounded-full ring-2 ring-white object-cover"
-                    src="/student-avatar3.jpg"
-                    alt="Student avatar 3"
-                  />
-                </div>
-                <p className="text-xs text-gray-500 font-medium leading-snug">
-                  Trusted by students, departments and institutions <br className="hidden sm:block" />
-                  across campuses.
-                </p>
-              </div>
             </div>
 
             {/* Right Hero Visual */}

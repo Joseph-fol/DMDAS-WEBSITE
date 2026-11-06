@@ -6,53 +6,19 @@ import { Check, ArrowRight, ShieldCheck, Sparkles, Key, FileCheck, Layers } from
 
 export function HeroCampusVisual() {
   return (
-    <div className="relative w-full max-w-lg lg:max-w-xl mx-auto flex items-center justify-center">
-      {/* Decorative red dotted arc / stroke */}
-      <svg
-        className="absolute -top-6 -left-6 w-full h-full pointer-events-none opacity-40 z-0"
-        viewBox="0 0 500 500"
-        fill="none"
-      >
-        <path
-          d="M50 250 A 200 200 0 0 1 450 250"
-          stroke="#E1193E"
-          strokeWidth="1.5"
-          strokeDasharray="6 6"
-        />
-        <circle cx="50" cy="250" r="4" fill="#E1193E" />
-      </svg>
-
-      {/* Main Curved Image Container */}
-      <div className="relative z-10 w-full overflow-hidden rounded-[2.5rem] lg:rounded-[3.5rem] border-4 border-white shadow-2xl bg-linear-to-br from-red-50 to-gray-100">
-        <div className="relative aspect-4/3 w-full">
-
-          <Image width={300} height={400}
-            src="/student-avatar1.jpg"
-            alt="Students in library collaborating with laptop on DMDAS"
-            className="w-full h-full object-cover object-center transform hover:scale-105 transition-transform duration-700"
-          />
-          
-          {/* Subtle bottom gradient */}
-          <div className="absolute inset-0 bg-linear-to-t from-black/40 via-transparent to-transparent opacity-60 pointer-events-none" />
-
-          {/* Floating Keycode Badge */}
-          <div className="absolute bottom-4 left-4 sm:bottom-6 sm:left-6 bg-white/95 backdrop-blur-md px-3.5 py-2 rounded-2xl shadow-lg border border-white/80 flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-full bg-red-100 text-[#E1193E] flex items-center justify-center">
-              <Sparkles className="w-4 h-4" />
-            </div>
-            <div>
-              <p className="text-[10px] text-gray-400 font-medium">Distribution Status</p>
-              <p className="text-xs font-bold text-gray-900 flex items-center gap-1">
-                <span>100% Instant Delivery</span>
-                <span className="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
+    <div className="relative mx-auto h-[360px] w-full max-w-xl overflow-hidden sm:h-[480px] lg:h-[560px]">
+      <div className="absolute inset-0 bg-[#241017]" />
+      <Image
+        src="/hero-banner.png"
+        alt="DMDAS payment confirmation and manual collection experience"
+        fill
+        sizes="(max-width: 1024px) 100vw, 50vw"
+        className="object-cover object-[62%_center] transition-transform duration-700 hover:scale-[1.02]"
+        priority
+      />
+      <div className="absolute inset-y-0 left-0 w-1/4 bg-gradient-to-r from-[#241017] to-transparent" />
     </div>
-  );
-}
+)}
 
 export function AboutImage() {
   return (

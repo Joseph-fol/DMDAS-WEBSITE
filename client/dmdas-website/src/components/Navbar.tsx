@@ -11,7 +11,7 @@ import ThemeToggle from "./ThemeToggle";
 const navLinks = [
   { name: "Home", href: "/" },
   { name: "About", href: "/about" },
-  { name: "How It Works", href: "/how-it-works" },
+  { name: "How it works", href: "/how-it-works" },
   { name: "Features", href: "/features" },
   { name: "FAQ", href: "/faq" },
   { name: "Contact", href: "/contact" },
@@ -37,14 +37,14 @@ export default function Navbar() {
 
   return (
     <header
-      className={`sticky top-0 z-40 w-full transition-all duration-300 bg-white/95 backdrop-blur-md ${
-        scrolled ? "shadow-sm border-b border-gray-100 py-3" : "py-4 sm:py-5 border-b border-transparent"
+      className={`sticky top-0 z-40 w-full transition-all duration-300 bg-white/95 backdrop-blur-lg ${
+        scrolled ? "shadow-sm border-b border-gray-100 py-2" : "py-2.5 sm:py-3 border-b border-transparent"
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Logo />
+          <Logo /> 
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center space-x-7 xl:space-x-8">
@@ -53,6 +53,7 @@ export default function Navbar() {
                 link.href === "/"
                   ? pathname === "/"
                   : pathname.startsWith(link.href);
+                  
 
               return (
                 <Link
