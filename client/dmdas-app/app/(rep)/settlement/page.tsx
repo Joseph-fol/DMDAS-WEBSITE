@@ -24,7 +24,7 @@ export default function SettlementPage() {
 
   // Withdraw Modal
   const [withdrawModalOpen, setWithdrawModalOpen] = useState(false);
-  const [withdrawAmount, setWithdrawAmount] = useState('4670');
+  const [withdrawAmount, setWithdrawAmount] = useState('Input your amount');
   const [withdrawing, setWithdrawing] = useState(false);
 
   // Update Account Modal
