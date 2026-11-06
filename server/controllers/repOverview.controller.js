@@ -288,6 +288,7 @@ const withdraw = async (req, res) => {
             'Configure and verify a settlement account before withdrawing.'
         })
     }
+    
     if (amount > availableBalance) {
       return res
         .status(400)

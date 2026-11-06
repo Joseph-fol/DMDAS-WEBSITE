@@ -101,6 +101,12 @@ export default function Signin() {
       if (userData) {
         sessionStorage.setItem("Student", JSON.stringify(userData));
       }
+
+      const destination =
+        userData.role === "rep" || userData.role === "superRep"
+          ? "/dashboard-rep"
+          : "/dashboard";
+      router.replace(destination);
       
     } catch (error) {
       if (axios.isAxiosError(error)) {
