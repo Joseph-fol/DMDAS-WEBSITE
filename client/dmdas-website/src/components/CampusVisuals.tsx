@@ -9,7 +9,7 @@ export function HeroCampusVisual() {
     <div className="relative mx-auto h-[360px] w-full max-w-xl overflow-hidden sm:h-[480px] lg:h-[560px]">
       <div className="absolute inset-0 bg-[#241017]" />
       <Image
-        src="/hero-banner.png"
+        src="/hero-image.png"
         alt="DMDAS payment confirmation and manual collection experience"
         fill
         sizes="(max-width: 1024px) 100vw, 50vw"
