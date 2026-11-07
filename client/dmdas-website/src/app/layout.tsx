@@ -30,7 +30,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={satoshi.className}>
-      <body className="font-sans antialiased min-h-screen flex flex-col bg-white text-[#1E293B] selection:bg-red-100 selection:text-[#E1193E]">
+      <body className="font-sans antialiased min-h-screen flex flex-col bg-white text-[#1E293B] selection:bg-blue-100 selection:text-blue-700">
         <ModalProvider>
           <Navbar />
           <main className="grow">
