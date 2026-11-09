@@ -71,6 +71,13 @@ const userSignup = async (req, res) => {
 
 const userSignin = async (req, res) => {
   const { pin, matricNumber } = req.body;
+
+  if (typeof matricNumber !== "string" || typeof pin !== "string") {
+    return res.status(400).json({
+      message: "Matric number and pin must be strings",
+    });
+  }
+
   if (!pin || !matricNumber) {
     return res.status(400).json({ message: "Matric number and pin are required" });
   }
