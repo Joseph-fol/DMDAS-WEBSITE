@@ -18,8 +18,17 @@ const emailValidation = body("email")
   .withMessage("Please provide a valid email address")
   .normalizeEmail();
 
-const pinValidation = (field, label) =>
-  body(field)
+const pinValidation = (field, label, requireString = false) => {
+  const validator = body(field);
+
+  if (requireString) {
+    validator
+      .isString()
+      .withMessage(`${label} must be a string`)
+      .bail();
+  }
+
+  return validator
     .trim()
     .notEmpty()
     .withMessage(`${label} is required`)
@@ -27,6 +36,7 @@ const pinValidation = (field, label) =>
     .withMessage(`${label} must be exactly 4 digits`)
     .isNumeric()
     .withMessage(`${label} must contain only digits`);
+};
 
 const validateSignup = [
   nameValidation("fullName", "Full name"),
@@ -64,6 +74,9 @@ const validateSignup = [
 
 const signinValidation = [
   body("matricNumber")
+    .isString()
+    .withMessage("Matric number must be a string")
+    .bail()
     .trim()
     .notEmpty()
     .withMessage("Matric number is required")
@@ -72,7 +85,7 @@ const signinValidation = [
     .matches(/^[A-Za-z0-9][A-Za-z0-9/_-]*$/)
     .withMessage("Matric number contains invalid characters")
     .toUpperCase(),
-  pinValidation("pin", "PIN"),
+  pinValidation("pin", "PIN", true),
 ];
 
 const requestPinValidation = [emailValidation];
