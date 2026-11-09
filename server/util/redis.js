@@ -183,6 +183,7 @@ module.exports = {
   getClient,
   getJson,
   setJson,
+  deleteKey,
   getManualCatalogVersion,
   getRepPortalVersion,
   invalidateManualCatalog,

@@ -221,6 +221,7 @@ const resetPinWithOTP = async (req, res) => {
     await user.save();
     await deleteKey(getPinResetOtpKey(otp));
     res.status(200).json({ message: "Your PIN has been successfully reset." });
+    
   } catch (error) {
     console.error("Error during resetPinWithOTP:", error);
     res.status(500).json({ message: "Internal Server Error" });
