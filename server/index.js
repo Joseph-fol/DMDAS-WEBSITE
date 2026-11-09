@@ -9,6 +9,7 @@ const studentRoute = require("./routes/student.route");
 const repRoute = require("./routes/rep.route");
 const generalRoute = require("./routes/general.route");
 const { checkInternetConnection } = require("./middleware/network");
+const mongoSanitize = require('express-mongo-sanitize');
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json({ limit: '10kb'}));
@@ -20,6 +21,8 @@ app.use(cors({
     credentials: true,
     exposedHeaders: ["RateLimit-Remaining", "RateLimit-Limit", "RateLimit-Reset", "Retry-After"]
 }));
+
+app.use(mongoSanitize())
 
 const URI = process.env.MONGO_URI;
 const port = process.env.PORT || 5000;
